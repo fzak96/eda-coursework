@@ -83,7 +83,7 @@ resource "harvester_virtualmachine" "workervm" {
   secure_boot = false
 
   run_strategy    = "RerunOnFailure"
-  hostname        = "${var.username}-host-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
+  hostname        = "${var.username}-worker-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
   reserved_memory = "100Mi"
   machine_type    = "q35"
 
