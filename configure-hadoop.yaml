@@ -3,9 +3,8 @@
   become_user: root
   hosts: all
   tasks:
-  - name: Set Java Home Path
-    ansible.builtin.blockinfile:
-      path: /home/almalinux/hadoop-3.4.0/etc/hadoop/hadoop-env.sh
-      block: |
-        export JAVA_HOME=/usr/lib/jvm/jre-openjdk/
-    state: present
+    - name: Set Java Home Path
+      ansible.builtin.blockinfile:
+        path: /home/almalinux/hadoop-3.4.0/etc/hadoop/hadoop-env.sh
+        block: |
+          export JAVA_HOME=/usr/lib/jvm/jre-openjdk/
