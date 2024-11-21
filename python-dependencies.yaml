@@ -1,0 +1,16 @@
+- name: Installing Critical Python Dependencies For Analysis
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+  - name: Installing Python3 dependencies
+    ansible.builtin.pip:
+      name:
+        - numpy
+        - pandas
+        - biopython
+        - torch
+        - scipy
+        - faiss-cpu
+    state: latest
+  

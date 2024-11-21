@@ -25,7 +25,7 @@ resource "harvester_virtualmachine" "mgmtvm" {
   
   count = 1
 
-  name                 = "${var.username}-host-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
+  name                 = "${var.username}-mgmt-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
   namespace            = var.namespace
   restart_after_update = true
 
@@ -38,7 +38,7 @@ resource "harvester_virtualmachine" "mgmtvm" {
   secure_boot = false
 
   run_strategy    = "RerunOnFailure"
-  hostname        = "${var.username}-host-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
+  hostname        = "${var.username}-mgmt-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
   reserved_memory = "100Mi"
   machine_type    = "q35"
 
