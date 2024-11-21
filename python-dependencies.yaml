@@ -12,5 +12,5 @@
         - torch
         - scipy
         - faiss-cpu
-    state: latest
+      state: latest
   
