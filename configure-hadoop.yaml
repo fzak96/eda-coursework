@@ -8,5 +8,4 @@
       path: /home/almalinux/hadoop-3.4.0/etc/hadoop/hadoop-env.sh
       block: |
         export JAVA_HOME=/usr/lib/jvm/jre-openjdk/
-    create: yes
     state: present
