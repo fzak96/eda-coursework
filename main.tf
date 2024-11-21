@@ -60,16 +60,6 @@ resource "harvester_virtualmachine" "hostvm" {
     auto_delete = true
   }
 
-  disk {
-    name       = "datadisk"
-    type       = "disk"
-    size       = "80Gi"
-    bus        = "virtio"
-    boot_order = 2
-
-    auto_delete = true
-  }
-
     cloudinit {
     user_data_secret_name = harvester_cloudinit_secret.cloud-config.name
   }
