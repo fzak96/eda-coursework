@@ -70,11 +70,11 @@ resource "harvester_virtualmachine" "workervm" {
   
   count = 1
 
-  name                 = "${var.username}-host-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
+  name                 = "${var.username}-worker-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
   namespace            = var.namespace
   restart_after_update = true
 
-  description = "Cluster Host Node"
+  description = "Cluster Worker Node"
 
   cpu    = 2 
   memory = "4Gi"
