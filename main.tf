@@ -21,7 +21,7 @@ resource "harvester_cloudinit_secret" "cloud-config" {
     })
 }
 
-resource "harvester_virtualmachine" "hostvm" {
+resource "harvester_virtualmachine" "mgmtvm" {
   
   count = 1
 
