@@ -3,5 +3,5 @@ output host_vm_ids {
 }
 
 output host_vm_ips {
-  value = harvester_virtualmachine.hostvm[*].ids
+  value = harvester_virtualmachine.hostvm.*.id
 }
