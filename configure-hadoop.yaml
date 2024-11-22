@@ -38,39 +38,39 @@
         state: present
     - name: config core-site.xml
       ansible.builtin.blockinfile:
-      path: "{{hadoop_home_path}}/etc/hadoop/core-site.xml"
-      insertafter: <configuration>
-      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-      block: |
-        <property>
-            <name>fs.default.name</name>
-            <value>hdfs://mgmt-node:9000/</value>
-        </property>
-        <property>
+        path: "{{hadoop_home_path}}/etc/hadoop/core-site.xml"
+        insertafter: <configuration>
+        marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+        block: |
+          <property>
+              <name>fs.default.name</name>
+              <value>hdfs://mgmt-node:9000/</value>
+           </property>
+          <property>
             <name>fs.default.FS</name>
             <value>hdfs://mgm-tnode:9000/</value>
-        </property>
-      state: present
+          </property>
+        state: present
     - name: config hdfs-site.xml
       ansible.builtin.blockinfile:
-      path: "{{hadoop_home_path}}/etc/hadoop/hdfs-site.xml"
-      insertafter: <configuration>
-      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-      block: |
-        <property>
+        path: "{{hadoop_home_path}}/etc/hadoop/hdfs-site.xml"
+        insertafter: <configuration>
+        marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+        block: |
+          <property>
               <name>dfs.namenode.name.dir</name>
               <value>/home/almalinux/hadoop/data/nameNode</value>
-        </property>
+          </property>
   
-        <property>
+          <property>
               <name>dfs.datanode.data.dir</name>
               <value>/home/almalinux/hadoop/data/dataNode</value>
-        </property>
-        <property>
+          </property>
+          <property>
             <name>dfs.replication</name>
             <value>1</value>
-        </property>
-      state: present
+          </property>
+        state: present
 - name: configure yarn
   ansible.builtin.blockinfile:
     path: "{{hadoop_home_path}}/etc/hadoop/yarn-site.xml"
