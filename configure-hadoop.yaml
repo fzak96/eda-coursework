@@ -12,9 +12,10 @@
           10.134.12.40 mgmt-node
           10.134.12.131 worker-node
         state: present
+
     - name: Setup Hadoop environment
       ansible.builtin.blockinfile:
-        path: "{{/hodoop_home_path}}/etc/hadoop/hadoop-env.sh"
+        path: "{{ hadoop_home_path }}/etc/hadoop/hadoop-env.sh"
         block: |
           export JAVA_HOME=/usr/lib/jvm/jre-openjdk/
           export HDFS_NAMENODE_USER=almalinux
@@ -22,38 +23,41 @@
           export HDFS_SECONDARYNAMENODE_USER=almalinux
           export YARN_RESOURCEMANAGER_USER=almalinux
           export YARN_NODEMANAGER_USER=almalinux
-          export HADOOP_HOME={{hadoop_home_path}}
+          export HADOOP_HOME={{ hadoop_home_path }}
           export HADOOP_INSTALL=$HADOOP_HOME
           export YARN_HOME=$HADOOP_HOME
           export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
           export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
           export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
         state: present
+
     - name: Setup shell environment
       ansible.builtin.blockinfile:
         path: /home/almalinux/.bashrc
         block: |
-          export HADOOP_HOME={{hadoop_home_path}}
+          export HADOOP_HOME={{ hadoop_home_path }}
           export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:$HOME/spark-3.5.3-bin-hadoop3-scala2.13/bin
         state: present
+
     - name: config core-site.xml
       ansible.builtin.blockinfile:
-        path: "{{hadoop_home_path}}/etc/hadoop/core-site.xml"
+        path: "{{ hadoop_home_path }}/etc/hadoop/core-site.xml"
         insertafter: <configuration>
         marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         block: |
           <property>
               <name>fs.default.name</name>
               <value>hdfs://mgmt-node:9000/</value>
-           </property>
+          </property>
           <property>
             <name>fs.default.FS</name>
-            <value>hdfs://mgm-tnode:9000/</value>
+            <value>hdfs://mgmt-node:9000/</value>
           </property>
         state: present
+
     - name: config hdfs-site.xml
       ansible.builtin.blockinfile:
-        path: "{{hadoop_home_path}}/etc/hadoop/hdfs-site.xml"
+        path: "{{ hadoop_home_path }}/etc/hadoop/hdfs-site.xml"
         insertafter: <configuration>
         marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         block: |
@@ -61,7 +65,7 @@
               <name>dfs.namenode.name.dir</name>
               <value>/home/almalinux/hadoop/data/nameNode</value>
           </property>
-  
+
           <property>
               <name>dfs.datanode.data.dir</name>
               <value>/home/almalinux/hadoop/data/dataNode</value>
@@ -71,41 +75,29 @@
             <value>1</value>
           </property>
         state: present
-- name: configure yarn
-  ansible.builtin.blockinfile:
-    path: "{{hadoop_home_path}}/etc/hadoop/yarn-site.xml"
-    insertafter: <configuration>
-    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-    block: |
-      <property>
+
+    - name: configure yarn
+      ansible.builtin.blockinfile:
+        path: "{{ hadoop_home_path }}/etc/hadoop/yarn-site.xml"
+        insertafter: <configuration>
+        marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+        block: |
+          <property>
               <name>yarn.acl.enable</name>
               <value>0</value>
-      </property>
-      <property>
+          </property>
+          <property>
               <name>yarn.resourcemanager.hostname</name>
               <value>node-master</value>
-      </property>
-      <property>
+          </property>
+          <property>
               <name>yarn.nodemanager.aux-services</name>
               <value>mapreduce_shuffle</value>
-      </property>
-      <property>
+          </property>
+          <property>
               <name>yarn.nodemanager.resource.memory-mb</name>
               <value>3072</value>
-      </property>
-      <property> 
-         <name>yarn.scheduler.minimum-allocation-mb</name> 
-         <value>1024</value>
-      </property>
-      <property> 
-         <name>yarn.scheduler.maximum-allocation-mb</name> 
-       <value>3072</value>
-      </property>
-- name: replace work ID with client name from /etc/hosts
-  ansible.builtin.blockinfile:
-    path:  "{{hadoop_home_path}}/etc/hadoop/workers"
-    regexp: 'localhost'
-    block: |
-      worker-node
-        
-
+          </property>
+          <property> 
+             <name>yarn.scheduler.minimum-allocation-mb</name> 
+      
