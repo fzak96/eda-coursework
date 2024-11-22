@@ -1,7 +1,5 @@
 - name: Configure worker
   hosts: node_worker
-  roles:
-    - worker
 - name: Copy new ssh identity to workers
   copy:
     src: /home/almalinux/.ssh/id_rsa.pub
