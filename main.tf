@@ -31,8 +31,8 @@ resource "harvester_virtualmachine" "mgmtvm" {
 
   description = "Cluster Host Node"
 
-  cpu    = 2 
-  memory = "4Gi"
+  cpu    = 4 
+  memory = "8Gi"
 
   efi         = true
   secure_boot = false
@@ -76,8 +76,8 @@ resource "harvester_virtualmachine" "workervm" {
 
   description = "Cluster Worker Node"
 
-  cpu    = 2 
-  memory = "4Gi"
+  cpu    = 4 
+  memory = "8Gi"
 
   efi         = true
   secure_boot = false
