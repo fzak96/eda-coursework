@@ -12,7 +12,6 @@
           10.134.12.40 mgmt-node
           10.134.12.131 worker-node
         state: present
-
     - name: Setup Hadoop environment
       ansible.builtin.blockinfile:
         path: "{{ hadoop_home_path }}/etc/hadoop/hadoop-env.sh"
