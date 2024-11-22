@@ -3,3 +3,4 @@
 - import_playbook: update.yaml
 - import_playbook: tools.yaml
 - import_playbook: python-dependencies.yaml
+- import_playbook: configure-hadoop.yaml
