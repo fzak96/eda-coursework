@@ -3,7 +3,7 @@
   tasks:
     - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
       community.crypto.openssh_keypair:
-        path: /home/almalinux/.ssh/crypt_id_rsa
+        path: /home/almalinux/.ssh/id_rsa
       register: keypair_result
 
     - name: Set authorized key for mgmt node
@@ -13,7 +13,7 @@
         key: "{{ keypair_result.public_key }}"
     - name: Copy public key to localmachine to distibute to workernodes 
       ansible.builtin.fetch:
-        src: /home/almalinux/.ssh/crypt_id_rsa.pub
+        src: /home/almalinux/.ssh/id_rsa.pub
         dest: /home/almalinux/.ssh/
         flat: true
 
