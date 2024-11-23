@@ -10,5 +10,5 @@
       ansible.posix.authorized_key:
         user: almalinux
         state: present
-        key: "{{ lookup('file', {{keypair_result.public_key}}) }}"
+        key: "{{ keypair_result.public_key }}"
 
