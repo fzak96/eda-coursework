@@ -9,5 +9,5 @@
       ansible.posix.authorized_key:
         user: almalinux
         state: present
-        key: "{{ lookup('ansible.builtin.file', '/home/almalinux/.ssh/crypt_id_rsa.pub') }}"
+        key: "{{ lookup('file', '/home/almalinux/.ssh/ansible_key.pub') }}"
 
