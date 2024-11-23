@@ -17,7 +17,7 @@ def generate_inventory():
     host_vars[mgmt_node] = { "ip": [mgmt_node] }
 
     counter = 0
-    workers = []
+    worker_nodes = []
 
     command = "terraform output --json worker_vm_ips".split()
     ip_data = json.loads(run(command).stdout)
@@ -25,20 +25,20 @@ def generate_inventory():
     for a in ip_data:
         name = a
         host_vars[name] = { "ip": [a] }
-        workers.append(name)
+        worker_nodes.append(name)
         counter += 1
 
     _meta = {}
     _meta["hostvars"] = host_vars
-    _all = { "children": ["mgmtnode", "workers"] }
+    _all = { "children": ["mgmtnode", "workernodes"] }
 
-    _workers = { "hosts": workers }
+    _workernodes = { "hosts": worker_nodes }
     _mgmtnode = { "hosts" : [mgmt_node] }
 
     _jd = {}
     _jd["_meta"] = _meta
     _jd["all"] = _all
-    _jd["workers"] = _workers
+    _jd["workernodes"] = _workernodes
     _jd["mgmtnode"] = _mgmtnode
 
     jd = json.dumps(_jd, indent=4)
