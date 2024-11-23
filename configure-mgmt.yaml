@@ -1,9 +1,12 @@
 - name: Configure mgmt-node
   hosts: mgmtnode
+  vars:
+    private_key_name: cluster_id_rsa
+    public_key_name: cluster_id_rsa.pub
   tasks:
     - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
       community.crypto.openssh_keypair:
-        path: /home/almalinux/.ssh/id_rsa
+        path: /home/almalinux/.ssh/{{ private_key_name }}
       register: keypair_result
 
     - name: Set authorized key for mgmt node
@@ -13,7 +16,7 @@
         key: "{{ keypair_result.public_key }}"
     - name: Copy public key to localmachine to distibute to workernodes 
       ansible.builtin.fetch:
-        src: /home/almalinux/.ssh/id_rsa.pub
+        src: /home/almalinux/.ssh/{{public_key_name}}
         dest: /home/almalinux/.ssh/
         flat: true
 

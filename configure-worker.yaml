@@ -1,13 +1,15 @@
 - name: Configure worker
   hosts: workernodes
+  vars:
+    public_key_name: cluster_id_rsa.pub
   tasks:
     - name: Copy new ssh identity to workernodes
       copy:
-        src: /home/almalinux/.ssh/id_rsa.pub
-        dest: /home/almalinux/.ssh/id_rsa.pub
+        src: /home/almalinux/.ssh/{{public_key_name}}
+        dest: /home/almalinux/.ssh/{{public_key_name}}
         remote_src: false
     - name: Set authorized key for mgmtnode
       ansible.posix.authorized_key:
         user: almalinux
         state: present
-        key: "{{ lookup('file', '/home/almalinux/.ssh/id_rsa.pub') }}"
+        key: "{{ lookup('file', '/home/almalinux/.ssh/{{public_key_name}}') }}"
