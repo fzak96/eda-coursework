@@ -11,4 +11,8 @@
         user: almalinux
         state: present
         key: "{{ keypair_result.public_key }}"
+    - name: Copy public key to localmachine to distibute to workernodes 
+      ansible.builtin.fetch:
+        src: /home/almalinux/.ssh/crypt_id_rsa.pub
+        dest: /home/almalinux/.ssh/crypt_id_rsa.pub
 
