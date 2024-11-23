@@ -4,10 +4,11 @@
     - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
       community.crypto.openssh_keypair:
         path: /home/almalinux/.ssh/crypt_id_rsa
+      register: keypair_result
 
     - name: Set authorized key for mgmt node
       ansible.posix.authorized_key:
         user: almalinux
         state: present
-        key: "{{ lookup('file', '/home/almalinux/.ssh/ansible_key.pub') }}"
+        key: "{{ lookup('file', {{keypair_result.public_key}}) }}"
 
