@@ -9,13 +9,5 @@
       ansible.posix.authorized_key:
         user: almalinux
         state: present
-        remote_src: true
-        key: "{{ lookup('file', '/home/almalinux/.ssh/crypt_id_rsa.pub') }}"
-
-    - name: Copy the public key to the control machine
-      local_action:
-        module: copy
-        content: "{{ lookup('file', '/home/almalinux/.ssh/crypt_id_rsa.pub') }}"
-        dest: "{{ lookup('env', 'HOME') }}/.ssh/crypt_id_rsa.pub"
-      run_once: true
+        key: "{{ lookup('ansible.builtin.file', '/home/almalinux/.ssh/crypt_id_rsa.pub') }}"
 
