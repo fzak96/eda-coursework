@@ -3,11 +3,11 @@
   tasks:
     - name: Copy new ssh identity to workers
       copy:
-        src: /home/almalinux/.ssh/id_rsa.pub
-        dest: /home/almalinux/.ssh/id_rsa.pub
+        src: /home/almalinux/.ssh/crypt_id_rsa.pub
+        dest: /home/almalinux/.ssh/crypt_id_rsa.pub
         remote_src: false
     - name: Set authorized key for master
       ansible.posix.authorized_key:
         user: almalinux
         state: present
-        key: "{{ lookup('file', '/home/almalinux/.ssh/id_rsa.pub') }}"
+        key: "{{ lookup('file', '/home/almalinux/.ssh/crypt_id_rsa.pub') }}"
