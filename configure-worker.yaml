@@ -1,12 +1,12 @@
 - name: Configure worker
   hosts: workernodes
   tasks:
-    - name: Copy new ssh identity to workers
+    - name: Copy new ssh identity to workernodes
       copy:
         src: /home/almalinux/.ssh/crypt_id_rsa.pub
         dest: /home/almalinux/.ssh/crypt_id_rsa.pub
         remote_src: false
-    - name: Set authorized key for master
+    - name: Set authorized key for mgmtnode
       ansible.posix.authorized_key:
         user: almalinux
         state: present
