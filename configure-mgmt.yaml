@@ -14,5 +14,6 @@
     - name: Copy public key to localmachine to distibute to workernodes 
       ansible.builtin.fetch:
         src: /home/almalinux/.ssh/crypt_id_rsa.pub
-        dest: /home/almalinux/.ssh/crypt_id_rsa.pub
+        dest: /home/almalinux/.ssh/
+        flat: true
 
