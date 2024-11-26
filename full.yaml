@@ -6,3 +6,4 @@
 - import_playbook: configure-hadoop.yaml
 - import_playbook: configure-mgmt.yaml
 - import_playbook: configure-worker.yaml
+- import_playbook: start-hadoop.yaml

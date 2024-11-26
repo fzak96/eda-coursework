@@ -8,7 +8,6 @@
       community.crypto.openssh_keypair:
         path: /home/almalinux/.ssh/{{ private_key_name }}
       register: keypair_result
-
     - name: Set authorized key for mgmt node
       ansible.posix.authorized_key:
         user: almalinux
