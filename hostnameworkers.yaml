@@ -1,0 +1,9 @@
+- name: Set Worker Node Hostname
+  hosts: workernodes
+  become: true
+  become_user: root
+  tasks: 
+  - name: Set hostname
+    ansible.builtin.hostname:
+      name: worker-node{{lookup('ansible.utils.index_of', groups["workers"], 'eq', inventory_hostname) + 1 }}
+      use: systemd

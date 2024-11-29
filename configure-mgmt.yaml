@@ -18,4 +18,8 @@
         src: /home/almalinux/.ssh/{{public_key_name}}
         dest: /home/almalinux/.ssh/
         flat: true
+    - name: generate worker file
+      ansible.builtin.template:
+        src: files/workers.j2
+        dest: hadoop-3.4.0/etc/hadoop/workers
 

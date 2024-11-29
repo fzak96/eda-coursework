@@ -12,5 +12,8 @@
         - torch
         - scipy
         - faiss-cpu
+        - rotary_embedding_torch
+        - natsort
+        - matplotlib
       state: latest
   

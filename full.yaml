@@ -7,3 +7,6 @@
 - import_playbook: configure-mgmt.yaml
 - import_playbook: configure-worker.yaml
 - import_playbook: start-hadoop.yaml
+- import_playbook: spark-install.yaml
+- import_playbook: spark-master.yaml
+- import_playbook: spark-worker.yaml
