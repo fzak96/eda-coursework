@@ -3,6 +3,8 @@
 - import_playbook: update.yaml
 - import_playbook: tools.yaml
 - import_playbook: python-dependencies.yaml
+# - import_playbook: hostnamemgmtnode.yaml
+# - import_playbook: hostnameworkernode.yaml
 - import_playbook: configure-hadoop.yaml
 - import_playbook: configure-mgmt.yaml
 - import_playbook: configure-worker.yaml
