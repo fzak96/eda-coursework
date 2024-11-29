@@ -13,12 +13,10 @@
         src: /home/almalinux/hadoop.tar.gz
         dest: /home/almalinux/
         remote_src: true
-    - name: set hostname mapping (needs to be automated)
-      ansible.builtin.blockinfile:
-        path: /etc/hosts
-        block: |
-          10.134.12.146 mgmt-node
-          10.134.12.140 worker-node
+    - name: Set hostname-ip mapping
+      ansible.builtin.template:
+        src: files/ip-mappings.j2
+        dest: /etc/hosts
         state: present
     - name: Setup Hadoop environment
       ansible.builtin.blockinfile:
