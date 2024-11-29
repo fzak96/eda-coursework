@@ -1,11 +1,18 @@
-- name: Configure Hadoop
-  become: true
-  become_user: root
+- name: Install and Configure Hadoop
   hosts: all
   vars:
     hadoop_home_path: /home/almalinux/hadoop-3.4.0
     private_key_name: cluster_id_rsa
   tasks:
+    - name: Downloading Hadoop
+      ansible.builtin.get_url:
+        url: https://downloads.apache.org/hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz
+        dest: /home/almalinux/hadoop.tar.gz
+    - name: Unpack Hadoop tgz file
+      ansible.builtin.unarchive:
+        src: /home/almalinux/hadoop.tar.gz
+        dest: /home/almalinux/
+        remote_src: true
     - name: set hostname mapping (needs to be automated)
       ansible.builtin.blockinfile:
         path: /etc/hosts

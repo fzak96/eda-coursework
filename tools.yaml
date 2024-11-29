@@ -29,14 +29,5 @@
   - name: Installing Java
     ansible.builtin.dnf:
      name: java-11-openjdk
-     state: latest  
-  - name: Downloading Hadoop
-    ansible.builtin.get_url:
-      url: https://downloads.apache.org/hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz
-      dest: /home/almalinux/hadoop.tar.gz
-  - name: Unpack Hadoop tgz file
-    ansible.builtin.unarchive:
-      src: /home/almalinux/hadoop.tar.gz
-      dest: /home/almalinux/
-      remote_src: true
+     state: latest 
 
