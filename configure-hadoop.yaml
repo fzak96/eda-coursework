@@ -17,7 +17,6 @@
       ansible.builtin.template:
         src: files/ip-mappings.j2
         dest: /etc/hosts
-        state: present
     - name: Setup Hadoop environment
       ansible.builtin.blockinfile:
         path: "{{ hadoop_home_path }}/etc/hadoop/hadoop-env.sh"
