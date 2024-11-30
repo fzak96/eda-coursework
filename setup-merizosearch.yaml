@@ -1,5 +1,5 @@
 - name: Install Merizo Search Code and Cath DB
-  hosts: workrnodes
+  hosts: workernodes
   tasks:
     - name: Distribute Merizo search code
       ansible.builtin.copy:
