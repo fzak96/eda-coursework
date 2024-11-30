@@ -1,0 +1,9 @@
+- name: Set hostname-ip mapping
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+  - name: Set hostname-ip mapping
+    ansible.builtin.template:
+      src: files/ip-mappings.j2
+      dest: /etc/hosts
