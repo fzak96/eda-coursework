@@ -5,5 +5,5 @@
   tasks: 
   - name: Set hostname
     ansible.builtin.hostname:
-      name: mgmt-node
+      name: mgmtnode
       use: systemd

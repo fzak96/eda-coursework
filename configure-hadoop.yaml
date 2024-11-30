@@ -17,7 +17,7 @@
       ansible.builtin.blockinfile:
         path: "{{ hadoop_home_path }}/etc/hadoop/hadoop-env.sh"
         block: |
-          export JAVA_HOME=/usr/lib/jvm/jre-openjdk/
+          export JAVA_HOME=/usr/lib/jvm/jre-openjdk
           export HDFS_NAMENODE_USER=almalinux
           export HDFS_DATANODE_USER=almalinux
           export HDFS_SECONDARYNAMENODE_USER=almalinux
@@ -37,7 +37,7 @@
         path: /home/almalinux/.bashrc
         block: |
           export HADOOP_HOME={{ hadoop_home_path }}
-          export JAVA_HOME=/usr/lib/jvm/jre-openjdk/
+          export JAVA_HOME=/usr/lib/jvm/jre-openjdk
           export PATH=$PATH:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:$HOME/spark-3.5.3-bin-hadoop3-scala2.13/bin
           export PATH=$PATH:${JAVA_HOME}/bin
         state: present
