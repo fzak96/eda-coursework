@@ -6,7 +6,7 @@
         src: /home/almalinux/eda-coursework/merizo-search
         dest: /home/almalinux/merizo-search
     - name: Distribute Cath DB
-      ansible.builtin.wget:
+      ansible.builtin.get_url:
         url: http://bioinfadmin.cs.ucl.ac.uk/downloads/merizo_search/cath_foldclassdb.tar.gz
         dest: /home/almalinux/merizo-search/database
     - name: Unpack Cath DB
