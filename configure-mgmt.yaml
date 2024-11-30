@@ -1,4 +1,4 @@
-- name: Configure mgmt-node
+- name: Configure mgmtnode
   hosts: mgmtnode
   vars:
     private_key_name: cluster_id_rsa

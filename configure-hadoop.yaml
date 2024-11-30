@@ -48,11 +48,11 @@
         block: |
           <property>
               <name>fs.default.name</name>
-              <value>hdfs://mgmt-node:9000/</value>
+              <value>hdfs://mgmtnode:9000/</value>
           </property>
           <property>
             <name>fs.default.FS</name>
-            <value>hdfs://mgmt-node:9000/</value>
+            <value>hdfs://mgmtnode:9000/</value>
           </property>
         state: present
 

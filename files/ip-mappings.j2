@@ -1,9 +1,6 @@
-# Worker Nodes
 {% for node in groups["workernodes"] %}
 {{ node }} workernode{{ loop.index }}
 {% endfor %}
-
-# Management Nodes
 {% for node in groups["mgmtnode"] %}
 {{ node }} mgmtnode
 {% endfor %}
