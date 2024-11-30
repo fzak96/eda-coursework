@@ -15,3 +15,4 @@
         src: /home/almalinux/merizo-search/database/cath_foldclassdb.tar.gz
         dest: /home/almalinux/merizo-search/database
         remote_src: true
+        state: present
