@@ -1,0 +1,16 @@
+- name: Install Merizo Search Code and Cath DB
+  hosts: workrnodes
+  tasks:
+    - name: Distribute Merizo search code
+      ansible.builtin.copy:
+        src: /home/almalinux/eda-coursework/merizo-search
+        dest: /home/almalinux/merizo-search
+    - name: Distribute Cath DB
+      ansible.builtin.wget:
+        url: http://bioinfadmin.cs.ucl.ac.uk/downloads/merizo_search/cath_foldclassdb.tar.gz
+        dest: /home/almalinux/merizo-search/database
+    - name: Unpack Cath DB
+      ansible.builtin.unarchive:
+        src: /home/almalinux/merizo-search/database/cath_foldclassdb.tar.gz
+        dest: /home/almalinux/merizo-search/database
+        remote_src: true
