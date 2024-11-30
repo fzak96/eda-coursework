@@ -1,4 +1,4 @@
-- name: Install and configure hadoop
+- name: format HDFS and start Hadoop services
   hosts: mgmtnode
   tasks: 
   - name: format cluster
