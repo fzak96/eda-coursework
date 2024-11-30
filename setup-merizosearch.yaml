@@ -6,13 +6,17 @@
         src: /home/almalinux/eda-coursework/merizo-search
         dest: /home/almalinux/merizo-search
         remote_src: false
+    - name: Ensure database directory exists
+      ansible.builtin.file:
+        path: /home/almalinux/merizo-search/database
+        state: directory
     - name: Distribute Cath DB
       ansible.builtin.get_url:
         url: http://bioinfadmin.cs.ucl.ac.uk/downloads/merizo_search/cath_foldclassdb.tar.gz
-        dest: /home/almalinux/merizo-search/database
+        dest: /home/almalinux/merizo-search/database/
     - name: Unpack Cath DB
       ansible.builtin.unarchive:
         src: /home/almalinux/merizo-search/database/cath_foldclassdb.tar.gz
-        dest: /home/almalinux/merizo-search/database
+        dest: /home/almalinux/merizo-search/database/
         remote_src: true
-        state: present
+        creates: /home/almalinux/merizo-search/database/cath_foldclassdb
