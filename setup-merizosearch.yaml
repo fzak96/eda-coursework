@@ -1,4 +1,4 @@
-- name: Install Merizo Search Code and Cath DB
+- name: Install Merizo Search Code and Cath DB on workernodes
   hosts: workernodes
   tasks:
     - name: Distribute Merizo search code
