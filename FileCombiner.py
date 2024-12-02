@@ -44,12 +44,9 @@ class FileCombiner:
         # Get files for this bucket
          start = bucket_num * files_per_bucket
          bucket_files = all_files[start:start + files_per_bucket]
-         
-         output_file = self.output_dir / f"combined_file_{bucket_num}.txt"
-        
-        # Combine files in bucket
-        with output_file.open('wb') as outfile:
-            for file in bucket_files:
+         output_file = self.output_dir / f"combined_file_{bucket_num}.pdb"
+         with output_file.open('wb') as outfile:
+             for file in bucket_files:
                 outfile.write(file.read_bytes())
                 outfile.write(b'\n')
 
