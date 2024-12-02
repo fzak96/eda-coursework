@@ -4,9 +4,10 @@ import math
 from typing import List
 
 class FileCombiner:
-    def __init__(self, source_dir: str, output_dir: str, block_size_mb: int = 128):
+    def __init__(self, source_dir: str, output_dir: str, output_filename: str, block_size_mb: int = 128):
         self.source_dir = Path(source_dir)
         self.output_dir = Path(output_dir)
+        self.output_filename = output_filename
         self.block_size_mb = block_size_mb
 
     def analyze_directory(self) -> dict:
@@ -44,7 +45,7 @@ class FileCombiner:
         # Get files for this bucket
          start = bucket_num * files_per_bucket
          bucket_files = all_files[start:start + files_per_bucket]
-         output_file = self.output_dir / f"combined_file_{bucket_num}.pdb"
+         output_file = self.output_dir / f"{self.output_filename+bucket_num}.pdb"
          with output_file.open('wb') as outfile:
              for file in bucket_files:
                 outfile.write(file.read_bytes())
@@ -57,11 +58,12 @@ def main():
 
     parser.add_argument('source_dir', type=str, help="The input file")
     parser.add_argument('output_dir', type=str, help="The output directory")
+    parser.add_argument('output_filename', type=str, help="The base name of the combined files")
 
     args = parser.parse_args()
     
     
-    combiner = FileCombiner(args.source_dir, args.output_dir)
+    combiner = FileCombiner(args.source_dir, args.output_dir, args.output_filename)
     combiner.combine_files()
 
 if __name__ == "__main__":
