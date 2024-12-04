@@ -73,8 +73,7 @@ def main():
     spark = SparkSession.builder.appName("MerizoSearchApp").getOrCreate()
     
     # Read PDB files from HDFS
-    input_path = "hdfs:///path/to/pdbs/*.pdb"
-    pdb_files = spark.SparkContext.wholeTextFiles(input_path)
+    pdb_files = spark.SparkContext.wholeTextFiles("/analysis/*.pdb")
     
     pdb_files.map(process_pdb)
     
