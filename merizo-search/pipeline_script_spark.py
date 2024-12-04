@@ -32,8 +32,9 @@ def run_parser(file_name_without_extension):
     Run the results_parser.py over the hhr file to produce the output summary
     """
     search_file = file_name_without_extension+"_search.tsv"
-    print(search_file, sys.argv[2])
-    cmd = ['python', 'results_parser.py', sys.argv[2], search_file]
+    output_dir = sys.argv[1]
+    print(search_file, output_dir)
+    cmd = ['python', 'results_parser.py', output_dir, search_file]
     print(f'STEP 2: RUNNING PARSER: {" ".join(cmd)}')
     p = Popen(cmd, stdin=PIPE,stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
