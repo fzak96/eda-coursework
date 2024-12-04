@@ -9,7 +9,7 @@ from typing import Tuple, Dict
 def run_merizo_search(pdb_file_path: str, output_prefix: str):
 
     cmd = ['python',
-           'home/almalinux/merizo-search/merizo-search/merizo.py',
+           '/home/almalinux/merizo-search/merizo-search/merizo.py',
            'easy-search',
            pdb_file_path,
            '/home/almalinux/merizo-search/database/cath-4.3-foldclassdb',
@@ -73,10 +73,9 @@ def main():
     spark = SparkSession.builder.appName("MerizoSearchApp").getOrCreate()
     
     # Read PDB files from HDFS
-    pdb_files = spark.sparkContext.wholeTextFiles("/analysis/*.pdb")
-    print(pdb_files.collect())
-    
-    pdb_files.map(process_pdb)
+    hdfs_path = os.path.join("/analysis/*.pdb")
+    pdb_files = spark.sparkContext.wholeTextFiles(hdfs_path)    
+    pdb_files.map(process_pdb).collect()
     
     spark.stop()
 
