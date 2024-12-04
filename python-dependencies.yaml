@@ -15,5 +15,6 @@
         - rotary_embedding_torch
         - natsort
         - matplotlib
+        - pyspark
       state: latest
   
