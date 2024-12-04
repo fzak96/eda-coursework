@@ -15,7 +15,7 @@ def run_parser(input_file, output_dir):
     """
     search_file = input_file+"_search.tsv"
     print(search_file, output_dir)
-    cmd = ['python3', './results_parser.py', output_dir, search_file]
+    cmd = ['python', 'results_parser.py', output_dir, search_file]
     print(f'STEP 2: RUNNING PARSER: {" ".join(cmd)}')
     p = Popen(cmd, stdin=PIPE,stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
@@ -25,11 +25,11 @@ def run_merizo_search(input_file, id):
     """
     Runs the merizo domain predictor to produce domains
     """
-    cmd = ['python3',
-           '/Users/farhanzaki/merizo_search/merizo_search/merizo.py',
+    cmd = ['python',
+           'home/almalinux/merizo-search/merizo-search/merizo.py',
            'easy-search',
            input_file,
-           '/Users/farhanzaki/merizo_search/database/cath-4.3-foldclassdb',
+           '/home/almalinux/merizo-search/database/cath-4.3-foldclassdb',
            id,
            'tmp',
            '--iterate',
