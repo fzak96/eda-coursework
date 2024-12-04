@@ -70,11 +70,11 @@ def process_pdb(record: Tuple[str, str]):
 
 def main():
     # Initialize Spark session
-    spark = SparkSession.builder.appName("MerizoSearchApp").getOrCreate()
+    spark = SparkSession.builder.appName("MerizoSearchApp") \
+    .config("spark.hadoop.fs.defaultFS", "hdfs://mgmtnode:9000").getOrCreate()
     
-    # Read PDB files from HDFS
-    hdfs_path = os.path.join("/analysis/*.pdb")
-    pdb_files = spark.sparkContext.wholeTextFiles(hdfs_path)    
+    
+    pdb_files = spark.sparkContext.wholeTextFiles("hdfs://mgmtnode:9000/analysis/*.pdb")    
     pdb_files.map(process_pdb).collect()
     
     spark.stop()
