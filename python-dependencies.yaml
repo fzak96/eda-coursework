@@ -1,5 +1,5 @@
 - name: Installing Critical Python Dependencies For Analysis
-  hosts: all
+  hosts: workernodes
   become: true
   become_user: root
   tasks:
