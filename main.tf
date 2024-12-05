@@ -60,7 +60,7 @@ resource "harvester_virtualmachine" "mgmtvm" {
     auto_delete = true
   }
 
-  tags {
+  tags={
 
     condenser_ingress_hadoop_hostname= "${var.username}"
     condenser_ingress_hadoop_port=9870
