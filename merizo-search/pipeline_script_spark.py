@@ -18,9 +18,6 @@ def run_merizo_search(pdb_file_path: str, output_prefix: str):
            '--iterate',
            '--output_headers',
            '-d',
-           'cpu',
-           '--threads',
-           '1'
            ]
     
     print(f'STEP 1: RUNNING MERIZO: {" ".join(cmd)}')
@@ -32,7 +29,7 @@ def run_parser(file_name_without_extension):
     Run the results_parser.py over the hhr file to produce the output summary
     """
     search_file = file_name_without_extension+"_search.tsv"
-    output_dir = sys.argv[1]
+    output_dir = '/home/amalinux/'
     print(search_file, output_dir)
     cmd = ['python', 'results_parser.py', output_dir, search_file]
     print(f'STEP 2: RUNNING PARSER: {" ".join(cmd)}')
