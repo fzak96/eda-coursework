@@ -62,11 +62,11 @@ resource "harvester_virtualmachine" "mgmtvm" {
 
   tags={
 
-    condenser_ingress_hadoop_hostname= "${var.username}"
+    condenser_ingress_hadoop_hostname= "${var.username}-hadoop"
     condenser_ingress_hadoop_port=9870
-    condenser_ingress_yarn_hostname="${var.username}"
+    condenser_ingress_yarn_hostname="${var.username}-yarn"
     condenser_ingress_yarn_port=8088
-    condenser_ingress_spark_hostname="${var.username}"
+    condenser_ingress_spark_hostname="${var.username}-spark"
     condenser_ingress_spark_port=4040
     condenser_ingress_isAllowed=true
     condenser_ingress_isEnabled=true
