@@ -81,6 +81,7 @@
             <value>1</value>
           </property>
         state: present
+
     - name: configure yarn
       ansible.builtin.blockinfile:
         path: "{{ hadoop_home_path }}/etc/hadoop/yarn-site.xml"
@@ -103,6 +104,6 @@
             <name>yarn.log-aggregation-enable</name>
             <value>true</value>
           </property>
-      state: present
+        state: present
 
       
