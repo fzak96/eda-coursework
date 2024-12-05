@@ -52,7 +52,7 @@ resource "harvester_virtualmachine" "mgmtvm" {
   disk {
     name       = "rootdisk"
     type       = "disk"
-    size       = "10Gi"
+    size       = "15Gi"
     bus        = "virtio"
     boot_order = 1
 
