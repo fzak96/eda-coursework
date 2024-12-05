@@ -31,8 +31,8 @@ resource "harvester_virtualmachine" "mgmtvm" {
 
   description = "Cluster Host Node"
 
-  cpu    = 4 
-  memory = "8Gi"
+  cpu    = 2 
+  memory = "4Gi"
 
   efi         = true
   secure_boot = false
@@ -52,12 +52,25 @@ resource "harvester_virtualmachine" "mgmtvm" {
   disk {
     name       = "rootdisk"
     type       = "disk"
-    size       = "50Gi"
+    size       = "10Gi"
     bus        = "virtio"
     boot_order = 1
 
     image       = data.harvester_image.img.id
     auto_delete = true
+  }
+
+  tags {
+
+    condenser_ingress_hadoop_hostname= "${var.username}"
+    condenser_ingress_hadoop_port=9870
+    condenser_ingress_yarn_hostname="${var.username}"
+    condenser_ingress_yarn_port=8088
+    condenser_ingress_spark_hostname="${var.username}"
+    condenser_ingress_spark_port=4040
+    condenser_ingress_isAllowed=true
+    condenser_ingress_isEnabled=true
+
   }
 
     cloudinit {
@@ -68,7 +81,7 @@ resource "harvester_virtualmachine" "mgmtvm" {
 
 resource "harvester_virtualmachine" "workervm" {
   
-  count = 1
+  count = 3
 
   name                 = "${var.username}-worker-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
   namespace            = var.namespace
@@ -77,7 +90,7 @@ resource "harvester_virtualmachine" "workervm" {
   description = "Cluster Worker Node"
 
   cpu    = 4 
-  memory = "8Gi"
+  memory = "32Gi"
 
   efi         = true
   secure_boot = false
@@ -97,7 +110,7 @@ resource "harvester_virtualmachine" "workervm" {
   disk {
     name       = "rootdisk"
     type       = "disk"
-    size       = "50Gi"
+    size       = "25Gi"
     bus        = "virtio"
     boot_order = 1
 
