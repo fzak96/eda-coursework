@@ -65,20 +65,22 @@
         marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         block: |
           <property>
-              <name>dfs.namenode.name.dir</name>
+            <name>dfs.namenode.name.dir</name>
               <value>/home/almalinux/hadoop/data/nameNode</value>
           </property>
-
           <property>
-              <name>dfs.datanode.data.dir</name>
-              <value>/home/almalinux/hadoop/data/dataNode</value>
+            <name>dfs.datanode.data.dir</name>
+            <value>/home/almalinux/hadoop/data/dataNode</value>
+          </property>
+          <property>
+            <name>dfs.namenode.http-address</name>
+            <value>mgmtnode:50070</value>
           </property>
           <property>
             <name>dfs.replication</name>
             <value>1</value>
           </property>
         state: present
-
     - name: configure yarn
       ansible.builtin.blockinfile:
         path: "{{ hadoop_home_path }}/etc/hadoop/yarn-site.xml"
