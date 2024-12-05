@@ -5,6 +5,62 @@ import tempfile
 import os
 import sys
 from typing import Tuple, Dict
+import logging
+import subprocess
+from typing import Tuple, Optional
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('merizo_pipeline.log'),
+        logging.StreamHandler()
+    ]
+)
+
+
+def run_command(cmd: list) -> Tuple[Optional[str], Optional[str]]:
+
+    # Convert the command list to a string for logging
+    cmd_str = " ".join(cmd)
+    logging.info(f"Executing command: {cmd_str}")
+    
+    try:
+        # Start the subprocess and wait for it to complete
+        p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        out, err = p.communicate()
+        
+        # Convert the output and error messages to strings
+        out_str = out.decode("utf-8") if out else None
+        err_str = err.decode("utf-8") if err else None
+        
+        # Check if the command was successful
+        if p.returncode != 0:
+            logging.error(f"Command failed with return code {p.returncode}")
+            logging.error(f"Error output: {err_str}")
+            raise subprocess.CalledProcessError(
+                p.returncode, cmd_str, output=out_str, stderr=err_str
+            )
+        
+        # Log success and return the results
+        logging.info("Command completed successfully")
+        if out_str:
+            logging.info(f"Output: {out_str}")
+        
+        return out_str, err_str
+            
+    except FileNotFoundError:
+        # This happens if we can't find the program we're trying to run
+        logging.error(f"Command not found: {cmd[0]}")
+        raise
+        
+    except Exception as e:
+        # Catch any other unexpected errors
+        logging.error(f"Unexpected error running command: {str(e)}")
+        raise
+
+
 
 def run_merizo_search(pdb_file_path: str, output_prefix: str):
 
@@ -23,6 +79,18 @@ def run_merizo_search(pdb_file_path: str, output_prefix: str):
     print(f'STEP 1: RUNNING MERIZO: {" ".join(cmd)}')
     p = Popen(cmd, stdin=PIPE,stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
+    print(out.decode("utf-8"))
+    print(err.decode("utf-8"))
+
+
+    try:
+        out, err = run_command(cmd)
+        if out:
+            logging.info("Merizo search completed successfully")
+            logging.debug(f"Merizo output: {out}")
+    except Exception as e:
+            logging.error(f"Merizo search failed: {str(e)}")
+    raise  
 
 def run_parser(file_name_without_extension):
     """
@@ -36,6 +104,7 @@ def run_parser(file_name_without_extension):
     p = Popen(cmd, stdin=PIPE,stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
     print(out.decode("utf-8"))
+    print(err.decode("utf-8"))
 
 def process_pdb(record: Tuple[str, str]):
 
