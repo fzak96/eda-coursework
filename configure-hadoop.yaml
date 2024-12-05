@@ -86,27 +86,21 @@
         marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         block: |
           <property>
-              <name>yarn.acl.enable</name>
-              <value>0</value>
+            <name>yarn.resourcemanager.resource-tracker.address</name>
+            <value>mgmtnode:8025</value>
           </property>
           <property>
-              <name>yarn.resourcemanager.hostname</name>
-              <value>node-master</value>
+            <name>yarn.resourcemanager.scheduler.address</name>
+            <value>mgmtnode:8035</value>
           </property>
           <property>
-              <name>yarn.nodemanager.aux-services</name>
-              <value>mapreduce_shuffle</value>
+            <name>yarn.resourcemanager.address</name>
+            <value>mgmtnode:8050</value>
           </property>
           <property>
-              <name>yarn.nodemanager.resource.memory-mb</name>
-              <value>3072</value>
+            <name>yarn.log-aggregation-enable</name>
+            <value>true</value>
           </property>
-          <property> 
-             <name>yarn.scheduler.minimum-allocation-mb</name> 
-          </property>
-          <property> 
-            <name>yarn.scheduler.maximum-allocation-mb</name> 
-            <value>3072</value>
-          </property>
+      state: present
 
       
