@@ -8,11 +8,16 @@
       ansible.builtin.get_url:
         url: https://downloads.apache.org/hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz
         dest: /home/almalinux/hadoop.tar.gz
+    - name: Check if Hadoop is already installed
+      ansible.builtin.stat:
+        path: "{{ hadoop_home_path }}/bin/hadoop"
+      register: hadoop_binary
     - name: Unpack Hadoop tgz file
       ansible.builtin.unarchive:
         src: /home/almalinux/hadoop.tar.gz
         dest: /home/almalinux/
         remote_src: true
+      when: not hadoop_binary.stat.exists
     - name: Setup Hadoop environment
       ansible.builtin.blockinfile:
         path: "{{ hadoop_home_path }}/etc/hadoop/hadoop-env.sh"
