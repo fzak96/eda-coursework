@@ -74,7 +74,7 @@
           </property>
           <property>
             <name>dfs.namenode.http-address</name>
-            <value>mgmtnode:50070</value>
+            <value>mgmtnode:9870</value>
           </property>
           <property>
             <name>dfs.replication</name>
@@ -103,6 +103,22 @@
           <property>
             <name>yarn.log-aggregation-enable</name>
             <value>true</value>
+          </property>
+          <property>
+            <name>yarn.nodemanager.resource.memory-mb</name>
+           <value>4096</value>
+          </property>
+          <property>
+           <name>yarn.scheduler.maximum-allocation-mb</name>
+            <value>4096</value>
+          </property>
+          <property>
+            <name>yarn.scheduler.minimum-allocation-mb</name>
+            <value>256</value>
+          </property>
+          <property>
+            <name>yarn.resourcemanager.webapp.address</name>
+            <value>mgmtnode:8088</value>
           </property>
         state: present
 
