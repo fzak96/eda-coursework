@@ -6,8 +6,6 @@
   - name: Installing Quality of Life Tools
     ansible.builtin.dnf:
       name:
-        - vim
-        - emacs
         - nano
         - tmux
         - net-tools
@@ -15,7 +13,6 @@
         - htop
         - git
         - ansible
-        - make
         - unzip
         - wget
         - links

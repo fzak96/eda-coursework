@@ -13,3 +13,6 @@
 - import_playbook: spark-install.yaml
 - import_playbook: spark-master.yaml
 - import_playbook: spark-worker.yaml
+- import_playbook: setup-alphafoldmodel.yaml
+- import_playbook: install-cathdb.yaml
+- import_playbook: merizosearch.yaml
