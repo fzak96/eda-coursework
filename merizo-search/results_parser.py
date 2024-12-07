@@ -6,7 +6,7 @@ import statistics
 import os
 
 # Location to save the output
-dir_for_output = '/home/alamlinux'
+dir_for_output = '/home/almalinux'
 
 cath_ids = defaultdict(int)
 plDDT_values = []
