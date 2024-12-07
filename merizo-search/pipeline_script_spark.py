@@ -109,6 +109,7 @@ def main():
     # Create Spark session with logging configs
     spark = SparkSession.builder \
         .appName("MerizoSearchApp") \
+        .master("yarn") \
         .config("spark.hadoop.fs.defaultFS", "hdfs://mgmtnode:9000") \
         .getOrCreate()
 
