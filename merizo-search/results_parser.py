@@ -11,7 +11,10 @@ dir_for_output = '/home/alamlinux'
 cath_ids = defaultdict(int)
 plDDT_values = []
 id = sys.argv[2].rstrip("_search.tsv")
-with open(sys.argv[1]+sys.argv[2], "r") as fhIn:
+
+search_file_path = os.path.join(sys.argv[1],sys.argv[2])
+
+with open(search_file_path, "r") as fhIn:
     next(fhIn)
     msreader = csv.reader(fhIn, delimiter='\t',) 
     tot_entries = 0
