@@ -24,7 +24,7 @@ class StringAccumulatorParam(AccumulatorParam):
     def addInPlace(self, v1, v2):
         return v1 + str(v2)
 
-def run_merizo_search(pdb_file_path: str, output_prefix: str):
+def run_merizo_search(pdb_file_path: str, output_prefix: str, base_id: str):
 
 
     # List files in current directory after command execution
@@ -58,12 +58,14 @@ def run_merizo_search(pdb_file_path: str, output_prefix: str):
     if err:
         log_accumulator.add(f"\nMerizo stderr: {err.decode('utf-8')}")
 
-def run_parser(file_name_without_extension):
+    # log_accumulator.add(f"\nStarting Parser for {base_id}")
+    run_parser(base_id,current_dir)
+
+def run_parser(file_name_without_extension, output_dir):
     """
     Run the results_parser.py over the hhr file to produce the output summary
     """
     search_file = file_name_without_extension+"_search.tsv"
-    output_dir = '/home/amalinux/'
     
     cmd = ['python', 'results_parser.py', output_dir, search_file]
     log_accumulator.add(f"\nExecuting Parser command: {' '.join(cmd)}")
@@ -104,10 +106,8 @@ def process_pdb(record):
                 f.write(content)
             
             log_accumulator.add(f"\nStarting Merizo search for {file_name}")
-            run_merizo_search(pdb_file_path, file_name)
+            run_merizo_search(pdb_file_path, file_name,base_id)
             
-            # log_accumulator.add(f"\nStarting Parser for {base_id}")
-            # run_parser(base_id)
             
             log_accumulator.add(f"\nSuccessfully completed processing {file_name}\n")
             

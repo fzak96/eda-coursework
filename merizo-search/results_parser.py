@@ -3,8 +3,10 @@ import csv
 import json
 from collections import defaultdict
 import statistics
-# fhOut = open(sys.argv[1]."summmary", "w")
-# fhOut.write('ID,domain_count\n')
+import os
+
+# Location to save the output
+dir_for_output = '/home/alamlinux'
 
 cath_ids = defaultdict(int)
 plDDT_values = []
@@ -19,8 +21,10 @@ with open(sys.argv[1]+sys.argv[2], "r") as fhIn:
         meta = row[15]
         data = json.loads(meta)
         cath_ids[data["cath"]] += 1
+    
+    output_file = os.path.join(dir_for_output, f"{id}.parsed")
 
-    with open(id+".parsed", "w", encoding="utf-8") as fhOut:
+    with open(output_file, "w", encoding="utf-8") as fhOut:
         if len(plDDT_values) > 0:
             fhOut.write(f"#{sys.argv[2]} Results. mean plddt: {statistics.mean(plDDT_values)}\n")
         else:
