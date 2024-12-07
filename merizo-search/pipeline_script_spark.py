@@ -34,7 +34,6 @@ def run_merizo_search(pdb_file_path: str, output_prefix: str):
            'tmp',
            '--iterate',
            '--output_headers',
-           '-d',
            ]
     
     log_accumulator.add(f"\nExecuting Merizo command: {' '.join(cmd)}")
