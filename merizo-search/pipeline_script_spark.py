@@ -67,7 +67,7 @@ def run_parser(file_name_without_extension, output_dir):
     """
     search_file = file_name_without_extension+"_search.tsv"
     
-    cmd = ['python', 'results_parser.py', output_dir, search_file]
+    cmd = ['python', '/home/almalinux/merizo-search/merizo-search/results_parser.py', output_dir, search_file]
     log_accumulator.add(f"\nExecuting Parser command: {' '.join(cmd)}")
     
     p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
