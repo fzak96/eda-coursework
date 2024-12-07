@@ -1,5 +1,4 @@
 from pyspark.sql import SparkSession
-from pyspark import SparkContext
 from subprocess import Popen, PIPE
 import tempfile
 import os
