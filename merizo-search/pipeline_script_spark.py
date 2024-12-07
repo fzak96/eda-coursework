@@ -25,6 +25,15 @@ class StringAccumulatorParam(AccumulatorParam):
         return v1 + str(v2)
 
 def run_merizo_search(pdb_file_path: str, output_prefix: str):
+
+
+    # List files in current directory after command execution
+    current_dir = os.getcwd()
+    log_accumulator.add(f"\nCurrent working directory: {current_dir}")
+    files_after = os.listdir(current_dir)
+    log_accumulator.add(f"\nFiles in directory before execution: {files_after}")
+
+
     cmd = ['python',
            '/home/almalinux/merizo-search/merizo-search/merizo.py',
            'easy-search',
@@ -39,6 +48,10 @@ def run_merizo_search(pdb_file_path: str, output_prefix: str):
     log_accumulator.add(f"\nExecuting Merizo command: {' '.join(cmd)}")
     p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
+
+    # List files in current directory after command execution
+    files_after = os.listdir(current_dir)
+    log_accumulator.add(f"\nFiles in directory after execution: {files_after}")
     
     if out:
         log_accumulator.add(f"\nMerizo output: {out.decode('utf-8')}")
