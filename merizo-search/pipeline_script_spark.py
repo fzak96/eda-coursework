@@ -88,9 +88,12 @@ def run_merizo_search(pdb_file_path: str, output_prefix: str):
         if out:
             logging.info("Merizo search completed successfully")
             logging.debug(f"Merizo output: {out}")
+        else:
+            # Raise error if no output was produced
+            raise RuntimeError("No output from Merizo search")
     except Exception as e:
-            logging.error(f"Merizo search failed: {str(e)}")
-    raise  
+        logging.error(f"Merizo search failed: {str(e)}")
+        raise  # Re-raise the caught exception
 
 def run_parser(file_name_without_extension):
     """
