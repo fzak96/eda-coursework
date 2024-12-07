@@ -110,6 +110,8 @@ def main():
         .appName("MerizoSearchApp") \
         .config("spark.hadoop.fs.defaultFS", "hdfs://mgmtnode:9000") \
         .master("yarn") \
+        .config("spark.yarn.log.interval", "1") \
+        .config("spark.yarn.log.aggregation.enable", "true") \
         .getOrCreate()
 
     # Create accumulator for worker logs
