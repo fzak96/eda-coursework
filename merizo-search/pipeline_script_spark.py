@@ -93,8 +93,8 @@ def process_pdb(record):
             log_accumulator.add(f"\nStarting Merizo search for {file_name}")
             run_merizo_search(pdb_file_path, file_name)
             
-            log_accumulator.add(f"\nStarting Parser for {base_id}")
-            run_parser(base_id)
+            # log_accumulator.add(f"\nStarting Parser for {base_id}")
+            # run_parser(base_id)
             
             log_accumulator.add(f"\nSuccessfully completed processing {file_name}\n")
             
