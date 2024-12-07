@@ -118,12 +118,15 @@ def process_pdb(record: Tuple[str, str]):
     else:
         base_id = file_name
         file_name= file_name + ".pdb"
+
+    logging.info(f"Processing file: {file_name}")
+    logging.info(f"Base file name: {base_id}")
     
     # Create a temporary directory for processing
     with tempfile.TemporaryDirectory() as temp_dir:
         # Create PDB file with proper name
         pdb_file_path = os.path.join(temp_dir, f"{file_name}")
-        
+        logging.info(f"pdb_file_path: {pdb_file_path}")
         # Create a temporary PDB file
         with open(pdb_file_path, 'w') as f:
             f.write(content)
@@ -141,8 +144,8 @@ def main():
     .config("spark.hadoop.fs.defaultFS", "hdfs://mgmtnode:9000").getOrCreate()
     
     
-    pdb_files = spark.sparkContext.wholeTextFiles("hdfs://mgmtnode:9000/analysis/*.pdb")    
-    pdb_files.map(process_pdb).collect()
+    pdb_files_rdd = spark.sparkContext.wholeTextFiles("hdfs://mgmtnode:9000/analysis/*.pdb")    
+    pdb_files_rdd.map(process_pdb).collect()
     
     spark.stop()
 
