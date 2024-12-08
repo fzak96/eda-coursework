@@ -6,6 +6,10 @@ from typing import Tuple
 import logging
 import sys
 from pyspark.accumulators import AccumulatorParam
+import csv
+import json
+from collections import defaultdict
+import statistics
 
 # Setup basic logging to stdout
 logging.basicConfig(
@@ -84,22 +88,40 @@ def add_to_hdfs(file_path, hdfs_path):
     if err:
         log_accumulator.add(f"\nHDFS stderr: {err.decode('utf-8')}")
 
-def run_parser(file_name, output_dir):
-    """
-    Run the results_parser.py over the hhr file to produce the output summary
-    """
+def run_parser(file_name, current_dir):
+
+    #test.pdb_search.tsv
     search_file = file_name+"_search.tsv"
+
+    cath_ids = defaultdict(int)
+    plDDT_values = []
+
+    search_file_path = os.path.join(current_dir,search_file)
+    log_accumulator.add(f"\n\n Looking for _search.tsv file in {search_file_path}")
+
+    with open(search_file_path, "r") as fhIn:
+        next(fhIn)
+        msreader = csv.reader(fhIn, delimiter='\t',)
+        for i, row in enumerate(msreader):
+            plDDT_values.append(float(row[3]))
+            meta = row[15]
+            data = json.loads(meta)
+            cath_ids[data["cath"]] += 1
     
-    cmd = ['python', '/home/almalinux/merizo-search/merizo-search/results_parser.py', output_dir, search_file]
-    log_accumulator.add(f"\nExecuting Parser command: {' '.join(cmd)}")
-    
-    p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    out, err = p.communicate()
-    
-    if out:
-        log_accumulator.add(f"\nParser output: {out.decode('utf-8')}")
-    if err:
-        log_accumulator.add(f"\nParser stderr: {err.decode('utf-8')}")
+        
+        # Create a temporary directory for processing
+        with tempfile.TemporaryDirectory() as temp_dir: 
+
+            output_file = os.path.join(temp_dir, f"{file_name}.parsed")
+            with open(output_file, "w", encoding="utf-8") as fhOut:
+                if len(plDDT_values) > 0:
+                    fhOut.write(f"#{sys.argv[2]} Results. mean plddt: {statistics.mean(plDDT_values)}\n")
+                else:
+                    fhOut.write(f"#{sys.argv[2]} Results. mean plddt: 0\n")
+                fhOut.write("cath_id,count\n")
+                for cath, v in cath_ids.items():
+                    fhOut.write(f"{cath},{v}\n")
+            add_to_hdfs(output_file, 'hdfs://mgmtnode:9000/parsed/')
 
 def process_pdb(record):
     try:
