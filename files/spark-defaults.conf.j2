@@ -1,6 +1,9 @@
 spark.authenticate true
 spark.authenticate.secret "{{lookup('ansible.builtin.password', './.sparkpass', length=16) }}"
 spark.executor.cores 2
-spark.executor.instances {{ groups['workernodes'] | length}}
-spark.default.parallelism {{ 2 * groups['workernodes'] | length  }}
+spark.executor.instances 6
+spark.default.parallelism 24
 spark.master yarn
+spark.driver.memory 4g
+spark.executor.memory 10g
+spark.executor.memoryOverhead 2g
