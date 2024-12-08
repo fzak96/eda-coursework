@@ -52,6 +52,14 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     # List files in current directory after command execution
     files_after = os.listdir(current_dir)
     log_accumulator.add(f"\nFiles in directory after execution: {files_after}")
+
+    #add segment and search files to hdfs
+
+    segment_file_path = os.path.join(current_dir,file_name+'_segment.tsv')
+    search_file_path = os.path.join(current_dir,file_name+'_search.tsv')
+
+    add_to_hdfs(segment_file_path, 'hdfs://mgmtnode:9000/data/')
+    add_to_hdfs(search_file_path, 'hdfs://mgmtnode:9000/data/')
     
     if out:
         log_accumulator.add(f"\nMerizo output: {out.decode('utf-8')}")
@@ -60,6 +68,21 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
 
     log_accumulator.add(f"\nStarting Parser for {file_name}")
     run_parser(file_name,current_dir) #output prefix is the file name with extension
+
+def add_to_hdfs(file_path, hdfs_path):
+    """
+    Add a file to HDFS
+    """
+    cmd = ['hdfs', 'dfs', '-copyFromLocal', file_path, hdfs_path]
+    log_accumulator.add(f"\nAdding file to HDFS: {' '.join(cmd)}")
+    
+    p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    out, err = p.communicate()
+    
+    if out:
+        log_accumulator.add(f"\nHDFS output: {out.decode('utf-8')}")
+    if err:
+        log_accumulator.add(f"\nHDFS stderr: {err.decode('utf-8')}")
 
 def run_parser(file_name, output_dir):
     """
