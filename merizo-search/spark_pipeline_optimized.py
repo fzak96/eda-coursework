@@ -73,7 +73,7 @@ def add_to_hdfs(file_path, hdfs_path):
     """
     Add a file to HDFS
     """
-    cmd = ['hdfs', 'dfs', '-copyFromLocal', file_path, hdfs_path]
+    cmd = ['/home/almalinux/hadoop-3.4.0/bin/hdfs', 'dfs', '-copyFromLocal', file_path, hdfs_path]
     log_accumulator.add(f"\nAdding file to HDFS: {' '.join(cmd)}")
     
     p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
