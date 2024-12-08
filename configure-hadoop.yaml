@@ -32,7 +32,6 @@
           export HADOOP_INSTALL=$HADOOP_HOME
           export YARN_HOME=$HADOOP_HOME
           export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-          export YARN_CONF_DIR=/home/almalinux/hadoop-3.4.0/etc/hadoop
           export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
           export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
           export HADOOP_SSH_OPTS="-i /home/almalinux/.ssh/{{private_key_name}}"
@@ -47,7 +46,6 @@
           export PATH=$PATH:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:$HOME/spark-3.5.3-bin-hadoop3-scala2.13/bin
           export PATH=$PATH:${JAVA_HOME}/bin
           export HADOOP_CONF_DIR=/home/almalinux/hadoop-3.4.0/etc/hadoop
-          export YARN_CONF_DIR=/home/almalinux/hadoop-3.4.0/etc/hadoop
         state: present
 
     - name: config core-site.xml
@@ -114,19 +112,23 @@
           </property>
           <property>
             <name>yarn.nodemanager.resource.memory-mb</name>
-           <value>4096</value>
+           <value>28672</value>
           </property>
           <property>
            <name>yarn.scheduler.maximum-allocation-mb</name>
-            <value>4096</value>
+            <value>28672</value>
           </property>
           <property>
             <name>yarn.scheduler.minimum-allocation-mb</name>
-            <value>256</value>
+            <value>1024</value>
           </property>
           <property>
             <name>yarn.resourcemanager.webapp.address</name>
             <value>mgmtnode:8088</value>
+          </property>
+          <property>
+            <name>yarn.nodemanager.resource.cpu-vcores</name>
+          <value>4</value>
           </property>
         state: present
 
