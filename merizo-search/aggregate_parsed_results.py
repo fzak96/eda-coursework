@@ -20,13 +20,13 @@ def main():
     pdb_files_df.printSchema()
 
     aggregated_results = pdb_files_df.withColumn("count", col("count").cast("integer")) \
-    .groupBy("cath_id").agg(sum("count")).show()
+    .groupBy("cath_id").agg(sum("count").alias("count"))
 
     # Aggregate the parsed results
     #aggregated_results = parsed_results.groupBy("pdb_id").agg({"score": "mean"})
 
-    # Save the aggregated results to HDFS
-    #aggregated_results.write.csv("hdfs:///user/almalinux/aggregated_results.csv", header=True)
+    #Save the aggregated results to HDFS
+    aggregated_results.write.csv("hdfs://user/almalinux/summaryOutputs/aggregated_results.csv", header=True)
 
     spark.stop()
 
