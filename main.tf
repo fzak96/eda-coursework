@@ -122,3 +122,70 @@ resource "harvester_virtualmachine" "workervm" {
     user_data_secret_name = harvester_cloudinit_secret.cloud-config.name
   }
 }
+
+
+resource "harvester_virtualmachine" "storagevm" {
+  
+  count = 1
+
+  name                 = "${var.username}-storage-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
+  namespace            = var.namespace
+  restart_after_update = true
+
+  description = "Storage VM to Host Minio"
+
+  cpu    = 4
+  memory = "8Gi"
+
+  efi         = true
+  secure_boot = true
+
+  run_strategy    = "RerunOnFailure"
+  hostname        = "${var.username}-minio-${format("%02d", count.index + 1)}-${random_id.secret.hex}"
+  reserved_memory = "100Mi"
+  machine_type    = "q35"
+
+  network_interface {
+    name           = "nic-1"
+    wait_for_lease = true
+    type           = "bridge"
+    network_name   = var.network_name
+  }
+
+  disk {
+    name       = "rootdisk"
+    type       = "disk"
+    size       = "10Gi"
+    bus        = "virtio"
+    boot_order = 1
+
+    image       = data.harvester_image.img.id
+    auto_delete = true
+  }
+
+  disk {
+    name       = "datadisk"
+    type       = "disk"
+    size       = "200Gi"
+    bus        = "virtio"
+    boot_order = 2
+
+    auto_delete = true
+  }
+
+  tags = {
+    condenser_ingress_isEnabled = true
+    condenser_ingress_os_hostname = "${var.username}-s3"
+    condenser_ingress_os_port = 9000
+    condenser_ingress_os_protocol = "https"
+    condenser_ingress_os_nginx_proxy-body-size = "100000m"
+    condenser_ingress_cons_hostname = "${var.username}-cons"
+    condenser_ingress_cons_port = 9001
+    condenser_ingress_cons_protocol = "https"
+    condenser_ingress_cons_nginx_proxy-body-size = "100000m"
+  }
+
+  cloudinit {
+    user_data_secret_name = harvester_cloudinit_secret.cloud-config.name
+  }
+}
