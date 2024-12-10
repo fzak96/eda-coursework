@@ -20,9 +20,6 @@ def generate_inventory():
     command = "terraform output --json storage_vm_ips".split()
     ip_data = json.loads(run(command).stdout)
     storage_node = ip_data.pop()
-
-    host_vars = {}
-
     host_vars[storage_node] = { "ip": [storage_node] }
 
 
