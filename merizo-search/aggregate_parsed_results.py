@@ -30,7 +30,9 @@ def main():
     stats = plddt_df.select(
         mean("plddt").alias("mean_plddt"),
         stddev("plddt").alias("stddev_plddt")
-    ).show()
+    )
+
+    stats.show()
     
 
     #need to modify this to run both human and ecoli folder paths, currently only running static path
@@ -41,6 +43,8 @@ def main():
     # Aggregate the parsed results for the cound for each cath id
     aggregated_results = parsed_files_df.withColumn("count", col("count").cast("integer")) \
     .groupBy("cath_id").agg(sum("count").alias("count"))
+
+    aggregated_results.show()
 
     #Save the aggregated results to HDFS
     aggregated_results.coalesce(1).write.mode("overwrite").csv("hdfs://mgmtnode:9000/summaryOutputs/", header=True)
