@@ -26,7 +26,7 @@ def main():
     #aggregated_results = parsed_results.groupBy("pdb_id").agg({"score": "mean"})
 
     #Save the aggregated results to HDFS
-    aggregated_results.write.csv("hdfs://user/almalinux/summaryOutputs/aggregated_results.csv", header=True)
+    aggregated_results.write.csv("hdfs://mgmtnode:9000/summaryOutputs/aggregated_results.csv", header=True)
 
     spark.stop()
 
