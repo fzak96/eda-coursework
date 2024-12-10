@@ -1,5 +1,5 @@
 - name: Set up second disk
-  hosts: storagevm
+  hosts: storagenode
   become: true
   become_user: root
   tasks: 

@@ -1,8 +1,11 @@
 ---
 
 - import_playbook: update.yaml
+- import_playbook: reboot.yaml
 - import_playbook: tools.yaml
 - import_playbook: python-dependencies.yaml
+- import_playbook: secon-disks.yaml
+- import_playbook: minio.yaml
 - import_playbook: hostnamemgmtnode.yaml
 - import_playbook: hostnameworkernodes.yaml
 - import_playbook: set-host-mappings.yaml
