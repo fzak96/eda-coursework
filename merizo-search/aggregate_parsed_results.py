@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import sum, col, mean, stddev, regexp_extract
+from pyspark.sql.functions import sum, col, mean, stddev
 
 def extract_pdldt_mean(file_tuple):
 
@@ -15,7 +15,7 @@ def main():
     spark = SparkSession.builder \
         .appName("AggregateParsedResults") \
         .config("spark.hadoop.fs.defaultFS", "hdfs://mgmtnode:9000") \
-        .master("yarn") \
+        .master("local") \
         .getOrCreate()
     
 
