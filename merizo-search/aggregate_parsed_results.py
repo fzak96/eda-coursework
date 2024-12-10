@@ -43,8 +43,8 @@ def main():
     .groupBy("cath_id").agg(sum("count").alias("count"))
 
     #Save the aggregated results to HDFS
-    aggregated_results.coalesce(1).write.csv("hdfs://mgmtnode:9000/summaryOutputs/", header=True)
-    stats.coalesce(1).write.csv("hdfs://mgmtnode:9000/summaryOutputs/", header=True)
+    aggregated_results.coalesce(1).write.mode("overwrite").csv("hdfs://mgmtnode:9000/summaryOutputs/", header=True)
+    stats.coalesce(1).write.mode("append").csv("hdfs://mgmtnode:9000/summaryOutputs/", header=True)
 
     spark.stop()
 
