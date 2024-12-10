@@ -18,6 +18,9 @@ def main():
 
     pdb_files_df.printSchema()
 
+    aggregated_results = pdb_files_df.withColumn("count", col("count").cast("integer")) \
+    .groupBy("cath_id").agg(sum("count")).show()
+
     # Aggregate the parsed results
     #aggregated_results = parsed_results.groupBy("pdb_id").agg({"score": "mean"})
 
