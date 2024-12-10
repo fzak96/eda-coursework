@@ -14,7 +14,7 @@ def main():
     #need to modify this to run both human and ecoli folder paths, currently only running static path
 
     # Load the parsed results from HDFS
-    pdb_files_df = spark.read.csv("hdfs://mgmtnode:9000/parsed/*.parsed", header=True, inferSchema=True)
+    pdb_files_df = spark.read.csv("hdfs://mgmtnode:9000/parsed/*.parsed", header=True, inferSchema=True, comment="#")
 
     pdb_files_df.printSchema()
 
