@@ -16,5 +16,7 @@
         - natsort
         - matplotlib
         - pyspark
+        - python-dotenv
+        - minio
       state: latest
   
