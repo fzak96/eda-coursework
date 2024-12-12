@@ -25,17 +25,3 @@
       systemd:
         name: grafana-server
       register: grafana_status
-
-    - name: Display Grafana service status
-      debug:
-        var: grafana_status.status
-        
-    - name: Verify Grafana is responding
-      uri:
-        url: http://localhost:3000
-        method: GET
-        status_code: 200
-      register: grafana_response
-      until: grafana_response.status == 200
-      retries: 6
-      delay: 10

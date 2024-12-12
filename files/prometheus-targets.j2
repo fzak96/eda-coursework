@@ -1,0 +1,6 @@
+{# Initialize target with host value #}
+{% set myList = ['localhost:9100'] %}
+{# Loop workers and add to list #} 
+{% for node in groups["workernodes"] %}
+{% set myList = myList + [node ~ ':9100'] %}
+{% endfor %}
