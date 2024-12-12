@@ -38,9 +38,9 @@
 
     - name: Update node_exporter targets in prometheus.yml
       ansible.builtin.replace:
-      path: /etc/prometheus/prometheus.yml
-      regexp: '(job_name: node\n\s*static_configs:\n\s*- targets: )\[.*\]'
-      replace: '\1{{ lookup("template", "prometheus-targets.j2") }}'
+        path: /etc/prometheus/prometheus.yml
+        regexp: '(job_name: node\n\s*static_configs:\n\s*- targets: )\[.*\]'
+        replace: '\1{{ lookup("template", "prometheus-targets.j2") }}'
 
     - name: Start Prometheus
       ansible.builtin.shell: prometheus --config.file=/etc/prometheus/prometheus.yml
