@@ -127,7 +127,7 @@ resource "harvester_virtualmachine" "workervm" {
     tags = {
     condenser_ingress_isEnabled = true
     condenser_ingress_isAllowed = true
-    condenser_ingress_node_hostname= "node${format("%02d", count.index + 1)}"
+    condenser_ingress_node_hostname= "${var.username}-node-${format("%02d", count.index + 1)}"
     condenser_ingress_node_port= 9100
   }
 

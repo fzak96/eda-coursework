@@ -38,3 +38,7 @@
 
     - name: Start Prometheus
       ansible.builtin.shell: prometheus --config.file=/etc/prometheus/prometheus.yml
+      become: true
+      become_user: root
+      async: 0
+      poll: 0 
