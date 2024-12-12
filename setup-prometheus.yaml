@@ -38,7 +38,7 @@
 
     - name: Update node_exporter targets in prometheus.yml
       ansible.builtin.template:
-        src: files/prometheus.j2
+        src: files/prometheus-targets.j2
         dest: /etc/prometheus/prometheus.yml
         
 
