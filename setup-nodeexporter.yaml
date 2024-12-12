@@ -1,0 +1,46 @@
+---
+- name: Node exporter installation
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+  - name: accept repo GPG key
+    ansible.builtin.shell:
+      cmd: rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+
+  - name: Install EPEL
+    ansible.builtin.dnf:
+      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+      state: present
+
+  - name: install node-exporter
+    ansible.builtin.dnf:
+      name: golang-github-prometheus-node-exporter
+      state: latest
+
+  - name: Create node_exporter service file
+    ansible.builtin.copy:
+      dest: /etc/systemd/system/node_exporter.service
+      content: |
+        [Unit]
+        Description=Node Exporter
+        After=network.target
+        
+        [Service]
+        User=root
+        Group=root
+        Type=simple
+        ExecStart=/usr/bin/node_exporter
+        
+        [Install]
+        WantedBy=multi-user.target
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: start node-exporter
+    ansible.builtin.service:
+      name: node_exporter
+      state: started
+      enabled: yes
+      daemon_reload: true
