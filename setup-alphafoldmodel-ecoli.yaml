@@ -30,7 +30,7 @@
       with_items: "{{ pdb_files.files }}"
       no_log: true
     - name: Run script to distribute AlphaFold EColi models into HDFS
-      ansible.builtin.shell: python distribute_data.py /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4
+      ansible.builtin.shell: python distribute_data.py /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4/ /alphafold/ecoli/
       register: hdfs_ecoli_upload
     - name: Delete AlphaFold Ecoli models from local storage
       ansible.builtin.file:
