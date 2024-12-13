@@ -2,7 +2,7 @@
 
 - import_playbook: update.yaml
 - import_playbook: reboot.yaml
-- import_playbook: tools.yaml
+- import_playbook: setup-tools.yaml
 - import_playbook: python-dependencies.yaml
 - import_playbook: secon-disks.yaml
 - import_playbook: minio.yaml
@@ -18,4 +18,8 @@
 - import_playbook: spark-worker.yaml
 - import_playbook: setup-alphafoldmodel.yaml
 - import_playbook: install-cathdb.yaml
-- import_playbook: merizosearch.yaml
+- import_playbook: setup-merizosearch.yaml
+- import_playbook: setup-nodeexporter.yaml
+- import_playbook: setup-prometheus.yaml
+- import_playbook: setup-grafana.yaml
+
