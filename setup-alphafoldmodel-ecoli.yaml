@@ -1,5 +1,5 @@
 - name: Download and distribute AlphaFold DB models into HDFS
-  hosts: mgmt
+  hosts: mgmtnode
   tasks:
     - name: Ensure AlphaFold directory exists
       ansible.builtin.file:
