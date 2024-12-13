@@ -31,8 +31,8 @@
     - name: Run script to distribute AlphaFold Human models into HDFS
       ansible.builtin.shell: python distribute_data.py /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4
       register: hdfs_human_upload
-    - name: Delete AlphaFold Human models from local storage
-      ansible.builtin.file:
-      state: absent
-      path: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4
-      when: hdfs_human_upload is succeeded
+    # - name: Delete AlphaFold Human models from local storage
+    #   ansible.builtin.file:
+    #   state: absent
+    #   path: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4
+    #   when: hdfs_human_upload is succeeded
