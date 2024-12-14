@@ -1,0 +1,6 @@
+- name: Run agggregation script on Merizo Search Engine
+  hosts: mgmtnode
+  tasks:
+    - name: Run aggregation script
+      ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/aggregate_parsed_results.py
+      register: aggregation_results

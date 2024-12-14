@@ -1,0 +1,5 @@
+- name: Run Merizo Search Analysis
+  hosts: mgmtnode
+  tasks:
+    - name: Run Merizo Search Analysis
+      ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/spark_pipeline_optimized.py

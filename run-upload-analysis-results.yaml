@@ -1,0 +1,6 @@
+- name: Upload analysis results to minio
+  hosts: mgmtnode # consider to do this on a worker node
+  tasks:
+    - name: Upload analysis results to minio
+      ansible.builtin.shell: python upload-analysis-results.yaml
+      register: upload_results
