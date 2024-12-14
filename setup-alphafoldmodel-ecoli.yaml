@@ -20,6 +20,10 @@
         src: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4.tar
         dest: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4
         remote_src: true
+    - name: Delete AlphaFold Human zipped model
+      ansible.builtin.file:
+        state: absent
+        path: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4.tar
     - name: Find all gzipped PDB files
       find:
         paths: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4
