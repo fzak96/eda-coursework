@@ -15,7 +15,7 @@
       ansible.builtin.get_url:
         url: https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000005640_9606_HUMAN_v4.tar
         dest: /home/almalinux/alpahfold-db/
-    - name: Create  local directory for AlphaFold DB Human model
+    - name: Create local directory for AlphaFold DB Human model
       ansible.builtin.file:
         path: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4
         state: directory
@@ -30,7 +30,7 @@
         patterns: "*.pdb.gz"
       register: pdb_files
     - name: Unzip PDB files (suppressed logs)
-      ansible.builtin.shell: gunzip {{ item.path }}
+      ansible.builtin.shell: "[ -f {{ item.path | regex_replace('\\.gz$', '') }} ] || gunzip {{ item.path }}"
       with_items: "{{ pdb_files.files }}"
       no_log: true
     - name: Run script to distribute AlphaFold Human models into HDFS
