@@ -9,7 +9,7 @@
         - numpy
         - pandas
         - biopython
-        - torch
+        - "torch --index-url https://download.pytorch.org/whl/cpu"
         - scipy
         - faiss-cpu
         - rotary_embedding_torch
@@ -19,4 +19,6 @@
         - python-dotenv
         - minio
       state: latest
+  - name: Clean pip cache
+    ansible.builtin.shell: pip cache purge
   

@@ -5,8 +5,6 @@
       ansible.builtin.file:
         path: /home/almalinux/alpahfold-db/
         state: directory
-    - name: Create HDFS directory for AlphaFold DB Ecoli models
-      ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/ecoli
     - name: Create local directory for AlphaFold DB Ecoli model
       ansible.builtin.file:
         path: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4
@@ -33,6 +31,8 @@
       ansible.builtin.shell: "[ -f {{ item.path | regex_replace('\\.gz$', '') }} ] || gunzip -f {{ item.path }}"
       with_items: "{{ pdb_files.files }}"
       no_log: true
+    - name: Create HDFS directory for AlphaFold DB Ecoli models
+      ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/ecoli
     - name: Run script to distribute AlphaFold EColi models into HDFS
       ansible.builtin.shell: python /merizo-search/distribute_data.py /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4/ /alphafold/ecoli/
       register: hdfs_ecoli_upload

@@ -33,9 +33,11 @@ def upload_pdb_files_to_hdfs(local_directory,hdfs_directory):
             print(f"Error uploading batch {i//BATCH_SIZE + 1}: {e}")
             continue
 
-if __name__ == "__main__":
-        
+def main():
     local_directory = sys.argv[1]
     hfds_directory = sys.argv[2]
     
     upload_pdb_files_to_hdfs(local_directory,hfds_directory)
+
+if __name__ == "__main__":
+    main()

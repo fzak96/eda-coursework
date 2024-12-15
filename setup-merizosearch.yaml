@@ -3,8 +3,9 @@
   tasks:
     - name: Distribute Merizo search code
       ansible.builtin.copy:
-        src: /home/almalinux/eda-coursework/merizo-search
+        src: /home/almalinux/eda-coursework/merizo-search/
         dest: /home/almalinux/merizo-search
+        mode: '0755'
         remote_src: false
     - name: Set execute permissions for tmalign
       file:

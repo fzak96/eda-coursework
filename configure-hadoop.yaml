@@ -17,7 +17,13 @@
         src: /home/almalinux/hadoop.tar.gz
         dest: /home/almalinux/
         remote_src: true
+      register: hadoop_binary_unpack
       when: not hadoop_binary.stat.exists
+    - name: Delete the tgz files to save space
+      ansible.builtin.file:
+        state: absent
+        path: /home/almalinux/hadoop.tar.gz
+      when: hadoop_binary_unpack is succeeded
     - name: Setup Hadoop environment
       ansible.builtin.blockinfile:
         path: "{{ hadoop_home_path }}/etc/hadoop/hadoop-env.sh"
@@ -85,6 +91,10 @@
           <property>
             <name>dfs.replication</name>
             <value>2</value>
+          </property>
+          <property>
+            <name>dfs.blocksize</name>
+            <value>1048576</value>  <!-- 1MB in Bytes -->
           </property>
         state: present
 
