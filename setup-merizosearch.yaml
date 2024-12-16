@@ -9,7 +9,7 @@
         remote_src: false
     - name: Set execute permissions for tmalign
       file:
-        path: /home/almalinux/merizo-search/merizo-search/programs/Foldclass/tmalign
+        path: /home/almalinux/merizo-search/programs/Foldclass/tmalign
         owner: almalinux
         group: almalinux
         mode: '0755'

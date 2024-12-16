@@ -1,5 +1,5 @@
 - import_playbook: update.yaml
-- import_playbook: reboot.yaml
+#- import_playbook: reboot.yaml
 - import_playbook: setup-tools.yaml
 - import_playbook: setup-python-dependencies.yaml
 - import_playbook: setup-second-disk.yaml
