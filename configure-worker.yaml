@@ -13,3 +13,7 @@
         user: almalinux
         state: present
         key: "{{ lookup('file', '/home/almalinux/.ssh/{{public_key_name}}') }}"
+    - name: copy ssh config file
+      ansible.builtin.copy:
+        src: files/ssh_config
+        dest: /home/almalinux/.ssh/config
