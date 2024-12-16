@@ -35,9 +35,7 @@
       ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/ecoli
     - name: Run script to distribute AlphaFold EColi models into HDFS
       ansible.builtin.shell: python /merizo-search/distribute_data.py /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4/ /alphafold/ecoli/
-      register: hdfs_ecoli_upload
     - name: Delete AlphaFold Ecoli models from local storage
       ansible.builtin.file:
         state: absent
         path: /home/almalinux/alpahfold-db/
-      when: hdfs_ecoli_upload is succeeded
