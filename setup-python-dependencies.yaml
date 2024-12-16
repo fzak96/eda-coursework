@@ -3,13 +3,12 @@
   become: true
   become_user: root
   tasks:
-  - name: Installing Python3 dependencies
+  - name: Installing Python3 dependencies (except torch)
     ansible.builtin.pip:
       name:
         - numpy
         - pandas
         - biopython
-        - "torch --index-url https://download.pytorch.org/whl/cpu"
         - scipy
         - faiss-cpu
         - rotary_embedding_torch
@@ -19,6 +18,12 @@
         - python-dotenv
         - minio
       state: latest
+
+  - name: Installing PyTorch with CPU support
+    ansible.builtin.pip:
+      name: torch
+      extra_args: --index-url https://download.pytorch.org/whl/cpu
+      state: latest
+
   - name: Clean pip cache
     ansible.builtin.shell: pip cache purge
-  
