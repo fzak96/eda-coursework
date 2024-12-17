@@ -6,15 +6,11 @@
       ansible.builtin.shell: hdfs namenode -format
  
     - name: start dfs
-      ansible.builtin.shell: nohup /home/almalinux/hadoop-3.4.0/sbin/start-dfs.sh &
-      async: 45
-      poll: 0
+      ansible.builtin.shell: nohup /home/almalinux/hadoop-3.4.0/sbin/start-dfs.sh
       environment:
         HADOOP_SSH_OPTS: "-o StrictHostKeyChecking=no"
     
     - name: start yarn
-      ansible.builtin.shell: nohup /home/almalinux/hadoop-3.4.0/sbin/start-yarn.sh &
-      async: 45
-      poll: 0
+      ansible.builtin.shell: nohup /home/almalinux/hadoop-3.4.0/sbin/start-yarn.sh
       environment:
         HADOOP_SSH_OPTS: "-o StrictHostKeyChecking=no"
