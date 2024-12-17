@@ -30,8 +30,6 @@
       ansible.builtin.shell: "rm -f /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4*.cif.gz"
     - name: Unzip remaining PDB files
       ansible.builtin.shell: "gunzip /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4/*.gz"
-      no_log: true
-      with_items: "{{ pdb_files.files }}"
     - name: Create HDFS directory for AlphaFold DB Human Models
       ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/human
     - name: Run script to distribute AlphaFold Human models into HDFS
