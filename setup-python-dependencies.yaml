@@ -3,27 +3,45 @@
   become: true
   become_user: root
   tasks:
-  - name: Installing Python3 dependencies (except torch)
-    ansible.builtin.pip:
-      name:
-        - numpy
-        - pandas
-        - biopython
-        - scipy
-        - faiss-cpu
-        - rotary_embedding_torch
-        - natsort
-        - matplotlib
-        - pyspark
-        - python-dotenv
-        - minio
-      state: latest
+    - name: Installing Python3 dependencies (except torch)
+      ansible.builtin.pip:
+        name:
+          - numpy
+          - pandas
+          - biopython
+          - scipy
+          - faiss-cpu
+          - rotary_embedding_torch
+          - natsort
+          - matplotlib
+          - pyspark
+          - python-dotenv
+          - minio
+        state: latest
 
-  - name: Installing PyTorch with CPU support
-    ansible.builtin.pip:
-      name: torch
-      extra_args: --index-url https://download.pytorch.org/whl/cpu
-      state: latest
+    - name: Installing PyTorch with CPU support
+      ansible.builtin.pip:
+        name: torch
+        extra_args: --extra-index-url https://download.pytorch.org/whl/cpu --no-deps
+        state: latest
 
-  - name: Clean pip cache
-    ansible.builtin.shell: pip cache purge
+    - name: Uninstall triton and NVIDIA packages if present
+      ansible.builtin.pip:
+        name:
+          - triton
+          - nvidia-cublas-cu12
+          - nvidia-cuda-cupti-cu12
+          - nvidia-cuda-nvrtc-cu12
+          - nvidia-cuda-runtime-cu12
+          - nvidia-cudnn-cu12
+          - nvidia-cufft-cu12
+          - nvidia-curand-cu12
+          - nvidia-cusolver-cu12
+          - nvidia-cusparse-cu12
+          - nvidia-nccl-cu12
+          - nvidia-nvjitlink-cu12
+          - nvidia-nvtx-cu12
+        state: absent
+
+    - name: Clean pip cache
+      ansible.builtin.shell: pip cache purge
