@@ -22,15 +22,10 @@
       ansible.builtin.file:
         state: absent
         path: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4.tar
-    - name: Find all gzipped PDB files
-      find:
-        paths: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4
-        patterns: "*.pdb.gz"
-      register: pdb_files
-    - name: Unzip PDB files (suppressed logs)
-      ansible.builtin.shell: "gunzip -f {{ item.path }}"
-      with_items: "{{ pdb_files.files }}"
-      no_log: true
+    - name: Delete all CIF files to create disk space
+      ansible.builtin.shell: "rm -f /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4/*.cif.gz"
+    - name: Unzip remaining PDB files
+      ansible.builtin.shell: "gunzip /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4/*.gz"
     - name: Create HDFS directory for AlphaFold DB Ecoli models
       ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/ecoli
     - name: Run script to distribute AlphaFold EColi models into HDFS

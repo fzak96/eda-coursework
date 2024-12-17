@@ -26,13 +26,11 @@
       ansible.builtin.file:
         state: absent
         path: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4.tar
-    - name: Find all gzipped PDB files
-      find:
-        paths: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4
-        patterns: "*.pdb.gz"
-      register: pdb_files
-    - name: Unzip PDB files (suppressed logs)
-      ansible.builtin.shell: "gunzip -f {{ item.path }}"
+    - name: Delete all CIF files to create disk space
+      ansible.builtin.shell: "rm -f /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4*.cif.gz"
+    - name: Unzip remaining PDB files
+      ansible.builtin.shell: "gunzip /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4/*.gz"
+      no_log: true
       with_items: "{{ pdb_files.files }}"
     - name: Create HDFS directory for AlphaFold DB Human Models
       ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/human
