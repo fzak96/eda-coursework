@@ -15,3 +15,7 @@
         dest: /home/almalinux/merizo-search/database/
         remote_src: true
         creates: /home/almalinux/merizo-search/database/cath_foldclassdb
+    - name: Delete Cath DB zipped model
+      ansible.builtin.file:
+        state: absent
+        dest: /home/almalinux/merizo-search/database/cath_foldclassdb.tar.gz

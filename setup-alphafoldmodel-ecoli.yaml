@@ -3,28 +3,28 @@
   tasks:
     - name: Ensure AlphaFold directory exists
       ansible.builtin.file:
-        path: /home/almalinux/alpahfold-db/
+        path: /home/almalinux/alphafold-db/
         state: directory
     - name: Create local directory for AlphaFold DB Ecoli model
       ansible.builtin.file:
-        path: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4
+        path: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4
         state: directory
     - name: Download AlphaFold DB E. coli model
       ansible.builtin.get_url:
         url: https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000000625_83333_ECOLI_v4.tar
-        dest: /home/almalinux/alpahfold-db/
+        dest: /home/almalinux/alphafold-db/
     - name: Unpack AlphaFold DB E. coli model
       ansible.builtin.unarchive:
-        src: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4.tar
-        dest: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4
+        src: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4.tar
+        dest: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4
         remote_src: true
-    - name: Delete AlphaFold Human zipped model
+    - name: Delete AlphaFold Ecoli zipped model
       ansible.builtin.file:
         state: absent
-        path: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4.tar
+        path: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4.tar
     - name: Find all gzipped PDB files
       find:
-        paths: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4
+        paths: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4
         patterns: "*.pdb.gz"
       register: pdb_files
     - name: Unzip PDB files (suppressed logs)
@@ -34,8 +34,8 @@
     - name: Create HDFS directory for AlphaFold DB Ecoli models
       ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/ecoli
     - name: Run script to distribute AlphaFold EColi models into HDFS
-      ansible.builtin.shell: python /merizo-search/distribute_data.py /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4/ /alphafold/ecoli/
+      ansible.builtin.shell: python /merizo-search/distribute_data.py /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4/ /alphafold/ecoli/
     - name: Delete AlphaFold Ecoli models from local storage
       ansible.builtin.file:
         state: absent
-        path: /home/almalinux/alpahfold-db/
+        path: /home/almalinux/alphafold-db/

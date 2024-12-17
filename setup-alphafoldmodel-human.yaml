@@ -3,32 +3,32 @@
   tasks:
     - name: Ensure AlphaFold directory exists
       ansible.builtin.file:
-        path: /home/almalinux/alpahfold-db/
+        path: /home/almalinux/alphafold-db/
         state: directory
     - name: Create local directory for AlphaFold DB Human model
       ansible.builtin.file:
-        path: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4
+        path: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4
         state: directory
     - name: Download AlphaFold DB Human model
       ansible.builtin.get_url:
         url: https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000005640_9606_HUMAN_v4.tar
-        dest: /home/almalinux/alpahfold-db/
+        dest: /home/almalinux/alphafold-db/
     - name: Create local directory for AlphaFold DB Human model
       ansible.builtin.file:
-        path: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4
+        path: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4
         state: directory
     - name: Unpack AlphaFold DB Human model
       ansible.builtin.unarchive:
-        src: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4.tar
-        dest: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4
+        src: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4.tar
+        dest: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4
         remote_src: true
     - name: Delete AlphaFold Human zipped model
       ansible.builtin.file:
         state: absent
-        path: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4.tar
+        path: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4.tar
     - name: Find all gzipped PDB files
       find:
-        paths: /home/almalinux/alpahfold-db/UP000000625_83333_ECOLI_v4
+        paths: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4
         patterns: "*.pdb.gz"
       register: pdb_files
     - name: Unzip PDB files (suppressed logs)
@@ -38,9 +38,9 @@
     - name: Create HDFS directory for AlphaFold DB Human Models
       ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/human
     - name: Run script to distribute AlphaFold Human models into HDFS
-      ansible.builtin.shell: python distribute_data.py /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4/ /alphafold/human/
+      ansible.builtin.shell: python distribute_data.py /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4/ /alphafold/human/
       register: hdfs_human_upload
     - name: Delete AlphaFold Human models from local storage
       ansible.builtin.file:
         state: absent
-        path: /home/almalinux/alpahfold-db/UP000005640_9606_HUMAN_v4
+        path: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4

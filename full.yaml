@@ -1,5 +1,5 @@
 - import_playbook: update.yaml
-#- import_playbook: reboot.yaml
+- import_playbook: reboot.yaml
 - import_playbook: setup-tools.yaml
 - import_playbook: setup-python-dependencies.yaml
 - import_playbook: setup-second-disk.yaml
@@ -18,9 +18,9 @@
 - import_playbook: start-spark-master.yaml
 - import_playbook: start-spark-worker.yaml
 - import_playbook: setup-merizosearch.yaml
-- import_playbook: setup-cathdb.yaml
 - import_playbook: setup-alphafoldmodel-ecoli.yaml
 - import_playbook: setup-alphafoldmodel-human.yaml
+- import_playbook: setup-cathdb.yaml
 #- import_playbook: run-merizo-search-analysis.yaml
 #- import_playbook: run-aggregate-parsed-results.yaml
 #- import_playbook: run-upload-analysis-results.yaml
