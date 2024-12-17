@@ -28,7 +28,7 @@
         path: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4.tar
     - name: Find all gzipped PDB files
       find:
-        paths: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4
+        paths: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4
         patterns: "*.pdb.gz"
       register: pdb_files
     - name: Unzip PDB files (suppressed logs)
