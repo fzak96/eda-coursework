@@ -38,7 +38,7 @@
     - name: Create HDFS directory for AlphaFold DB Human Models
       ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/human
     - name: Run script to distribute AlphaFold Human models into HDFS
-      ansible.builtin.shell: python distribute_data.py /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4/ /alphafold/human/
+      ansible.builtin.shell: python /home/almalinux/merizo-search/distribute_data.py /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4/ /alphafold/human/
       register: hdfs_human_upload
     - name: Delete AlphaFold Human models from local storage
       ansible.builtin.file:
