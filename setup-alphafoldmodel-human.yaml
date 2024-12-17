@@ -26,12 +26,10 @@
       ansible.builtin.file:
         state: absent
         path: /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4.tar
-    - name: Delete all CIF files to create disk space
-      ansible.builtin.shell: "rm -f /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4*.cif.gz"
-    - name: Unzip remaining PDB files
-      ansible.builtin.shell: "gunzip /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4/*.gz"
-    - name: Create HDFS directory for AlphaFold DB Human Models
-      ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/human
+    - name: Delete all CIF files
+      ansible.builtin.shell: "find /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4 -name '*.cif.gz' -delete"
+    - name: Unzip all remaining gzipped files (PDB files)
+      ansible.builtin.shell: "find /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4 -name '*.gz' -exec gunzip {} +"
     - name: Run script to distribute AlphaFold Human models into HDFS
       ansible.builtin.shell: python /home/almalinux/merizo-search/distribute_data.py /home/almalinux/alphafold-db/UP000005640_9606_HUMAN_v4/ /alphafold/human/
       register: hdfs_human_upload
