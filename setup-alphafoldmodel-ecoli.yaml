@@ -28,7 +28,7 @@
         patterns: "*.pdb.gz"
       register: pdb_files
     - name: Unzip PDB files (suppressed logs)
-      ansible.builtin.shell: "[ -f {{ item.path | regex_replace('\\.gz$', '') }} ] || gunzip -f {{ item.path }}"
+      ansible.builtin.shell: "gunzip -f {{ item.path }}"
       with_items: "{{ pdb_files.files }}"
       no_log: true
     - name: Create HDFS directory for AlphaFold DB Ecoli models
