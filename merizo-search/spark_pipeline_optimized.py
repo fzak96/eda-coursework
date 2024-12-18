@@ -62,8 +62,8 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     segment_file_path = os.path.join(current_dir,file_name+'_segment.tsv')
     search_file_path = os.path.join(current_dir,file_name+'_search.tsv')
 
-    add_to_hdfs(segment_file_path, 'hdfs://mgmtnode:9000/data/')
-    add_to_hdfs(search_file_path, 'hdfs://mgmtnode:9000/data/')
+    add_to_hdfs(segment_file_path, 'hdfs://mgmtnode:9000/data/ecoli/')
+    add_to_hdfs(search_file_path, 'hdfs://mgmtnode:9000/data/ecoli/')
     
     if out:
         log_accumulator.add(f"\nMerizo output: {out.decode('utf-8')}")
@@ -77,10 +77,18 @@ def add_to_hdfs(file_path, hdfs_path):
     """
     Add a file to HDFS
     """
-    cmd = ['/home/almalinux/hadoop-3.4.0/bin/hdfs', 'dfs', '-copyFromLocal', file_path, hdfs_path]
-    log_accumulator.add(f"\nAdding file to HDFS: {' '.join(cmd)}")
+
+    mkdir_cmd = ['/home/almalinux/hadoop-3.4.0/bin/hdfs', 'dfs', '-mkdir', '-p', hdfs_path]
+    log_accumulator.add(f"\nCreating HDFS directory: {' '.join(mkdir_cmd)}")
+
+    p = Popen(mkdir_cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    out, err = p.communicate()
+
+
+    add_cmd = ['/home/almalinux/hadoop-3.4.0/bin/hdfs', 'dfs', '-copyFromLocal', file_path, hdfs_path]
+    log_accumulator.add(f"\nAdding file to HDFS: {' '.join(add_cmd)}")
     
-    p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p = Popen(add_cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
     
     if out:
@@ -123,7 +131,7 @@ def run_parser(file_name, current_dir):
                 fhOut.write("cath_id,count\n")
                 for cath, v in cath_ids.items():
                     fhOut.write(f"{cath},{v}\n")
-            add_to_hdfs(output_file, 'hdfs://mgmtnode:9000/parsed/')
+            add_to_hdfs(output_file, 'hdfs://mgmtnode:9000/parsed/ecoli/')
 
 def process_pdb(record):
     try:
@@ -179,7 +187,7 @@ def main():
     log_accumulator = spark.sparkContext.accumulator("", StringAccumulatorParam())
 
     # Get and process files
-    pdb_files_rdd = spark.sparkContext.wholeTextFiles("hdfs://mgmtnode:9000/analysis/*.pdb")
+    pdb_files_rdd = spark.sparkContext.wholeTextFiles("hdfs://mgmtnode:9000/alphafold/ecoli/*.pdb")
     file_count = pdb_files_rdd.count()
     logger.info(f"Found {file_count} PDB files to process")
     
