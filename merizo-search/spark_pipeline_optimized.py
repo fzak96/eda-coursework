@@ -39,7 +39,7 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
 
 
     cmd = ['python',
-           '/home/almalinux/merizo-search/merizo-search/merizo.py',
+           '/home/almalinux/merizo-search/merizo.py',
            'easy-search',
            pdb_file_path,
            '/home/almalinux/merizo-search/database/cath-4.3-foldclassdb',
@@ -53,6 +53,9 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
 
+    if p.returncode != 0:
+        raise Exception(f"Merizo search failed: {err.decode('utf-8')}")
+
     # List files in current directory after command execution
     files_after = os.listdir(current_dir)
     log_accumulator.add(f"\nFiles in directory after execution: {files_after}")
@@ -62,8 +65,16 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     segment_file_path = os.path.join(current_dir,file_name+'_segment.tsv')
     search_file_path = os.path.join(current_dir,file_name+'_search.tsv')
 
-    add_to_hdfs(segment_file_path, 'hdfs://mgmtnode:9000/data/ecoli/')
-    add_to_hdfs(search_file_path, 'hdfs://mgmtnode:9000/data/ecoli/')
+    # Only add files if they exist
+    if os.path.exists(segment_file_path):
+        add_to_hdfs(segment_file_path, 'hdfs://mgmtnode:9000/data/ecoli/')
+    else:
+        log_accumulator.add(f"\nWarning: Segment file not found at {segment_file_path}")
+
+    if os.path.exists(search_file_path):
+        add_to_hdfs(search_file_path, 'hdfs://mgmtnode:9000/data/ecoli/')
+    else:
+        log_accumulator.add(f"\nWarning: Search file not found at {search_file_path}")
     
     if out:
         log_accumulator.add(f"\nMerizo output: {out.decode('utf-8')}")
@@ -106,6 +117,11 @@ def run_parser(file_name, current_dir):
 
     search_file_path = os.path.join(current_dir,search_file)
     log_accumulator.add(f"\n\n Looking for _search.tsv file in {search_file_path}")
+
+    # Add check for file existence
+    if not os.path.exists(search_file_path):
+        log_accumulator.add(f"\nError: Search file not found at {search_file_path}")
+        return
 
     with open(search_file_path, "r") as fhIn:
         next(fhIn)
