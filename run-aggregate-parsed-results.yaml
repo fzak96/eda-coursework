@@ -2,7 +2,7 @@
   hosts: "{{ groups['workernodes'][1] }}"
   tasks:
     - name: Create HDFS output directory for aggregated results
-      ansible.builtin.shell: hdfs dfs -mkdir /summaryOutputs
+      ansible.builtin.shell: hdfs dfs -mkdir -p /summaryOutputs
     - name: Run aggregation script
       ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/aggregate_parsed_results.py
       register: aggregation_results
