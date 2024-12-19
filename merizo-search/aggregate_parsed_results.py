@@ -38,7 +38,7 @@ def main():
     #need to modify this to run both human and ecoli folder paths, currently only running static path
 
     # Load the parsed results from HDFS
-    parsed_files_df = spark.read.csv("hdfs://mgmtnode:9000/parsed/*.parsed", header=True, inferSchema=True, comment="#")
+    parsed_files_df = spark.read.csv("hdfs://mgmtnode:9000/parsed/ecoli/*.parsed", header=True, inferSchema=True, comment="#")
 
     # Aggregate the parsed results for the cound for each cath id
     aggregated_results = parsed_files_df.withColumn("count", col("count").cast("integer")) \
