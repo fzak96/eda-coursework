@@ -21,6 +21,6 @@
 - import_playbook: setup-alphafoldmodel-ecoli.yaml
 - import_playbook: setup-alphafoldmodel-human.yaml
 - import_playbook: setup-cathdb.yaml
-#- import_playbook: run-merizo-search-analysis.yaml
+- import_playbook: run-merizo-search-analysis.yaml
 #- import_playbook: run-aggregate-parsed-results.yaml
 #- import_playbook: run-upload-analysis-results.yaml
