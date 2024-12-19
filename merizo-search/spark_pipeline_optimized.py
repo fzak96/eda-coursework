@@ -63,7 +63,7 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     search_file_path = os.path.join(current_dir,file_name+'_search.tsv')
 
     hdfs_merizo_output_path = f"hdfs://mgmtnode:9000/data/{sys.argv[1]}/"
-    
+
     # Only add files if they exist
     if os.path.exists(segment_file_path):
         add_to_hdfs(segment_file_path, hdfs_merizo_output_path)
@@ -197,10 +197,10 @@ def main():
 
     # Get and process files
     pdb_files_rdd = spark.sparkContext.wholeTextFiles(hdfs_input_path)
-    file_count = pdb_files_rdd.count()
     
     # Process files and collect worker logs
-    pdb_files_rdd.map(process_pdb).collect()
+    # limit for testing purposes
+    pdb_files_rdd.limit(100).map(process_pdb).collect()
     
     logger.info(log_accumulator.value)
     spark.stop()
