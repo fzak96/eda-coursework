@@ -8,7 +8,7 @@ def upload_pdb_files_to_hdfs(local_directory,hdfs_directory):
     hfds_directory_path = Path(hdfs_directory)
 
     pdb_files = list(local_directory_path.glob("*.pdb"))
-    BATCH_SIZE = 50
+    BATCH_SIZE = 500
     
     for i in range(0, len(pdb_files), BATCH_SIZE):
 

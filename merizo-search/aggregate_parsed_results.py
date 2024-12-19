@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import sum, col, mean, stddev
+from pyspark.sql.functions import sum, col, mean, stddev,lit
 import sys
 import os
 
@@ -21,6 +21,7 @@ def main():
         .getOrCreate()
     
     folder_name = sys.argv[1]
+    organism = sys.argv[1]
     hdfs_input_path = f"hdfs://mgmtnode:9000/parsed/{folder_name}/*.parsed"
     hdfs_output_path = f"hdfs://mgmtnode:9000/summaryOutputs/"
     
@@ -34,14 +35,12 @@ def main():
 
     # Calculate statistics
     stats = plddt_df.select(
+        lit(organism).alias("organism"),
         mean("plddt").alias("mean_plddt"),
         stddev("plddt").alias("stddev_plddt")
     )
 
-    stats.show()
-    
-
-    #need to modify this to run both human and ecoli folder paths, currently only running static path
+    stats.coalesce(1).write.mode("append").csv(hdfs_output_path, header=True)    
 
     # Load the parsed results from HDFS
     parsed_files_df = spark.read.csv(hdfs_input_path, header=True, inferSchema=True, comment="#")
@@ -49,8 +48,6 @@ def main():
     # Aggregate the parsed results for the cound for each cath id
     aggregated_results = parsed_files_df.withColumn("count", col("count").cast("integer")) \
     .groupBy("cath_id").agg(sum("count").alias("count"))
-
-    aggregated_results.show()
 
     #Save the aggregated results to HDFS
     aggregated_results.coalesce(1).write.mode("overwrite").csv(hdfs_output_path, header=True)
