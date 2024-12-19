@@ -62,14 +62,16 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     segment_file_path = os.path.join(current_dir,file_name+'_segment.tsv')
     search_file_path = os.path.join(current_dir,file_name+'_search.tsv')
 
+    hdfs_merizo_output_path = f"hdfs://mgmtnode:9000/data/{sys.argv[1]}/"
+    
     # Only add files if they exist
     if os.path.exists(segment_file_path):
-        add_to_hdfs(segment_file_path, 'hdfs://mgmtnode:9000/data/ecoli/')
+        add_to_hdfs(segment_file_path, hdfs_merizo_output_path)
     else:
         log_accumulator.add(f"\nWarning: Segment file not found at {segment_file_path}")
 
     if os.path.exists(search_file_path):
-        add_to_hdfs(search_file_path, 'hdfs://mgmtnode:9000/data/ecoli/')
+        add_to_hdfs(search_file_path, hdfs_merizo_output_path)
     else:
         log_accumulator.add(f"\nWarning: Search file not found at {search_file_path}")
     
@@ -142,8 +144,8 @@ def run_parser(file_name, current_dir):
                 fhOut.write("cath_id,count\n")
                 for cath, v in cath_ids.items():
                     fhOut.write(f"{cath},{v}\n")
-            hdfs_output_path = f"hdfs://mgmtnode:9000/parsed/{sys.argv[1]}/"
-            add_to_hdfs(output_file, hdfs_output_path)
+            hdfs_parsed_output_path = f"hdfs://mgmtnode:9000/parsed/{sys.argv[1]}/"
+            add_to_hdfs(output_file, hdfs_parsed_output_path)
 
 def process_pdb(record):
     try:
