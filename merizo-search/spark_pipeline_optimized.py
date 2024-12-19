@@ -10,6 +10,7 @@ import csv
 import json
 from collections import defaultdict
 import statistics
+import sys
 
 # Setup basic logging to stdout
 logging.basicConfig(
@@ -33,9 +34,7 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
 
     # List files in current directory after command execution
     current_dir = os.getcwd()
-    log_accumulator.add(f"\nCurrent working directory: {current_dir}")
     files_after = os.listdir(current_dir)
-    log_accumulator.add(f"\nFiles in directory before execution: {files_after}")
 
 
     cmd = ['python',
@@ -49,7 +48,6 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
            '--output_headers',
            ]
     
-    log_accumulator.add(f"\nExecuting Merizo command: {' '.join(cmd)}")
     p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
 
@@ -58,7 +56,6 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
 
     # List files in current directory after command execution
     files_after = os.listdir(current_dir)
-    log_accumulator.add(f"\nFiles in directory after execution: {files_after}")
 
     #add segment and search files to hdfs
 
@@ -81,7 +78,6 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     if err:
         log_accumulator.add(f"\nMerizo stderr: {err.decode('utf-8')}")
 
-    log_accumulator.add(f"\nStarting Parser for {file_name}")
     run_parser(file_name,current_dir) #output prefix is the file name with extension
 
 def add_to_hdfs(file_path, hdfs_path):
@@ -116,7 +112,6 @@ def run_parser(file_name, current_dir):
     plDDT_values = []
 
     search_file_path = os.path.join(current_dir,search_file)
-    log_accumulator.add(f"\n\n Looking for _search.tsv file in {search_file_path}")
 
     # Add check for file existence
     if not os.path.exists(search_file_path):
@@ -147,12 +142,12 @@ def run_parser(file_name, current_dir):
                 fhOut.write("cath_id,count\n")
                 for cath, v in cath_ids.items():
                     fhOut.write(f"{cath},{v}\n")
-            add_to_hdfs(output_file, 'hdfs://mgmtnode:9000/parsed/ecoli/')
+            hdfs_output_path = f"hdfs://mgmtnode:9000/parsed/{sys.argv[1]}/"
+            add_to_hdfs(output_file, hdfs_output_path)
 
 def process_pdb(record):
     try:
         filepath, content = record
-        log_accumulator.add(f"\n\nStarting to process file: {filepath}")
         
         # Extract file name from the file path
         file_name = filepath.rsplit('/', 1)[-1]
@@ -162,25 +157,18 @@ def process_pdb(record):
         else:
             base_id = file_name
             file_name = file_name + ".pdb"
-
-        log_accumulator.add(f"\nProcessing PDB file: {file_name}")
-        log_accumulator.add(f"\nBase ID: {base_id}")
         
         # Create a temporary directory for processing
         with tempfile.TemporaryDirectory() as temp_dir:
             # Create PDB file with proper name
             pdb_file_path = os.path.join(temp_dir, f"{file_name}")
-            log_accumulator.add(f"\nCreated temporary file at: {pdb_file_path}")
             
             # Create a temporary PDB file
             with open(pdb_file_path, 'w') as f:
                 f.write(content)
             
-            log_accumulator.add(f"\nStarting Merizo search for {file_name}")
             run_merizo_search(pdb_file_path, file_name)
             
-            
-            log_accumulator.add(f"\nSuccessfully completed processing {file_name}\n")
             
     except Exception as e:
         log_accumulator.add(f"\nError processing file {filepath}: {str(e)}\n")
@@ -197,25 +185,22 @@ def main():
         .config("spark.yarn.log.interval", "1") \
         .config("spark.yarn.log.aggregation.enable", "true") \
         .getOrCreate()
+    
+    hdfs_folder = sys.argv[1]
+    hdfs_input_path = f"hdfs://mgmtnode:9000/alphafold/{hdfs_folder}/*.pdb"
 
     # Create accumulator for worker logs
     global log_accumulator
     log_accumulator = spark.sparkContext.accumulator("", StringAccumulatorParam())
 
     # Get and process files
-    pdb_files_rdd = spark.sparkContext.wholeTextFiles("hdfs://mgmtnode:9000/alphafold/ecoli/*.pdb")
+    pdb_files_rdd = spark.sparkContext.wholeTextFiles(hdfs_input_path)
     file_count = pdb_files_rdd.count()
-    logger.info(f"Found {file_count} PDB files to process")
     
     # Process files and collect worker logs
     pdb_files_rdd.map(process_pdb).collect()
     
-    # Print accumulated worker logs
-    logger.info("\n=== Worker Execution Logs ===")
     logger.info(log_accumulator.value)
-    logger.info("=== End Worker Logs ===")
-    
-    logger.info("\n\n*** PIPELINE COMPLETED ***\n\n")
     spark.stop()
 
 if __name__ == "__main__":
