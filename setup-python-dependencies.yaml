@@ -17,6 +17,7 @@
           - pyspark
           - python-dotenv
           - minio
+          - hdfs
         state: latest
 
     - name: Installing PyTorch with CPU support

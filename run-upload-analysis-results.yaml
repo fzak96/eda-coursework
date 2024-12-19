@@ -1,6 +1,19 @@
 - name: Upload analysis results to minio
-  hosts: mgmtnode # consider to do this on a worker node
+  hosts: "{{ groups['workernodes'][0] }}"
   tasks:
-    - name: Upload analysis results to minio
-      ansible.builtin.shell: python upload-analysis-results.yaml
-      register: upload_results
+    - name: Copy upload-analysis-results.py to node for uploading analysis results
+      ansible.builtin.copy:
+        src: /home/almalinux/eda-coursework/upload-analysis-results.py
+        dest: /home/almalinux/upload-analysis-results.py
+        mode: '0755'
+        remote_src: false
+    - name: Upload analysis results to minio for parsed/ecoli
+      ansible.builtin.shell: python upload-analysis-results.py parsed/ecoli
+    - name: Upload analysis results to minio for data/ecoli
+      ansible.builtin.shell: python upload-analysis-results.py data/ecoli
+    # - name: Upload analysis results to minio for parsed/human
+    #   ansible.builtin.shell: python upload-analysis-results.py parsed/human
+    # - name: Upload analysis results to minio for data/human
+    #   ansible.builtin.shell: python upload-analysis-results.py data/human
+    - name: Upload analysis results to minio for Summary Outputs
+      ansible.builtin.shell: python upload-analysis-results.py summaryOutputs

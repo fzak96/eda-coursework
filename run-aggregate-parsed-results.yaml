@@ -5,7 +5,5 @@
       ansible.builtin.shell: hdfs dfs -mkdir -p /summaryOutputs
     - name: Run aggregation script for Ecoli Models
       ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/aggregate_parsed_results.py ecoli
-      register: aggregation_results
-    - name: Run aggregation script for Human Models
-      ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/aggregate_parsed_results.py human
-      register: aggregation_results
+    # - name: Run aggregation script for Human Models
+    #   ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/aggregate_parsed_results.py human
