@@ -19,7 +19,7 @@ def main():
         .getOrCreate()
     
 
-    parsed_files_rdd = spark.sparkContext.wholeTextFiles("hdfs://mgmtnode:9000/parsed/ecloi/*.parsed")
+    parsed_files_rdd = spark.sparkContext.wholeTextFiles("hdfs://mgmtnode:9000/parsed/ecoli/*.parsed")
 
     rdd_with_plddtmeans = parsed_files_rdd.map(extract_pdldt_mean)
 
