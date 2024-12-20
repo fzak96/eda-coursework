@@ -7,6 +7,11 @@
         dest: /home/almalinux/upload-analysis-results.py
         mode: '0755'
         remote_src: false
+    - name: Copy minio password file to node for uploading analysis results
+      ansible.builtin.copy:
+        src: /home/almalinux/eda-coursework/.miniopass
+        dest: /home/almalinux/.miniopass
+        remote_src: false
     - name: Upload analysis results to minio for parsed/ecoli
       ansible.builtin.shell: python upload-analysis-results.py parsed/ecoli
     - name: Upload analysis results to minio for data/ecoli
