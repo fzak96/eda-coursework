@@ -29,7 +29,7 @@ class StringAccumulatorParam(AccumulatorParam):
     def addInPlace(self, v1, v2):
         return v1 + str(v2)
 
-def run_merizo_search(pdb_file_path: str, file_name: str):
+def run_merizo_search(pdb_file_path: str, file_name: str, hdfs_folder: str):
 
 
     # List files in current directory after command execution
@@ -62,7 +62,7 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     segment_file_path = os.path.join(current_dir,file_name+'_segment.tsv')
     search_file_path = os.path.join(current_dir,file_name+'_search.tsv')
 
-    hdfs_merizo_output_path = f"hdfs://mgmtnode:9000/data/{sys.argv[1]}/"
+    hdfs_merizo_output_path = f"hdfs://mgmtnode:9000/data/{hdfs_folder}/"
 
     # Only add files if they exist
     if os.path.exists(segment_file_path):
@@ -80,7 +80,7 @@ def run_merizo_search(pdb_file_path: str, file_name: str):
     if err:
         log_accumulator.add(f"\nMerizo stderr: {err.decode('utf-8')}")
 
-    run_parser(file_name,current_dir) #output prefix is the file name with extension
+    run_parser(file_name,current_dir,hdfs_folder) #output prefix is the file name with extension
 
 def add_to_hdfs(file_path, hdfs_path):
     """
@@ -105,7 +105,7 @@ def add_to_hdfs(file_path, hdfs_path):
     if err:
         log_accumulator.add(f"\nHDFS stderr: {err.decode('utf-8')}")
 
-def run_parser(file_name, current_dir):
+def run_parser(file_name, current_dir, hdfs_folder):
 
     #test.pdb_search.tsv
     search_file = file_name+"_search.tsv"
@@ -144,10 +144,10 @@ def run_parser(file_name, current_dir):
                 fhOut.write("cath_id,count\n")
                 for cath, v in cath_ids.items():
                     fhOut.write(f"{cath},{v}\n")
-            hdfs_parsed_output_path = f"hdfs://mgmtnode:9000/parsed/{sys.argv[1]}/"
+            hdfs_parsed_output_path = f"hdfs://mgmtnode:9000/parsed/{hdfs_folder}/"
             add_to_hdfs(output_file, hdfs_parsed_output_path)
 
-def process_pdb(record):
+def process_pdb(record, hdfs_folder):
     try:
         filepath, content = record
         
@@ -169,7 +169,7 @@ def process_pdb(record):
             with open(pdb_file_path, 'w') as f:
                 f.write(content)
             
-            run_merizo_search(pdb_file_path, file_name)
+            run_merizo_search(pdb_file_path, file_name, hdfs_folder)
             
             
     except Exception as e:
@@ -198,9 +198,11 @@ def main():
     # Get and process files
     pdb_files_rdd = spark.sparkContext.wholeTextFiles(hdfs_input_path)
     
-    # Process files and collect worker logs
-    # limit for testing purposes
-    pdb_files_rdd.limit(100).map(process_pdb).collect()
+    # Add indices and filter to first 100 elements, then add hdfs_folder
+    indexed_rdd = pdb_files_rdd.zipWithIndex()
+    filtered_rdd = indexed_rdd.filter(lambda x: x[1] < 100).map(lambda x: x[0])
+    filtered_rdd.map(lambda x: process_pdb(x, hdfs_folder)).collect()
+    #pdb_files_rdd.map(lambda x: process_pdb(x, hdfs_folder)).collect()
     
     logger.info(log_accumulator.value)
     spark.stop()
