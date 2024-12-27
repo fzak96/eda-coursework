@@ -2,6 +2,15 @@
 - name: format HDFS and start Hadoop services
   hosts: mgmtnode
   tasks:
+    - name: Check if HDFS is already formatted
+      ansible.builtin.stat:
+        path: /home/almalinux/hadoop-3.4.0/dfs/name
+      register: hdfs_stat
+
+    - name: Format HDFS if not formatted
+      ansible.builtin.shell: hdfs namenode -format
+      when: not hdfs_stat.stat.exists
+
     - name: format cluster
       ansible.builtin.shell: hdfs namenode -format
  

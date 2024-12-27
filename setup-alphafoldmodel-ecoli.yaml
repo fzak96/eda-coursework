@@ -13,6 +13,7 @@
       ansible.builtin.get_url:
         url: https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000000625_83333_ECOLI_v4.tar
         dest: /home/almalinux/alphafold-db/
+        force: no
     - name: Unpack AlphaFold DB E. coli model
       ansible.builtin.unarchive:
         src: /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4.tar
@@ -30,8 +31,6 @@
       ansible.builtin.shell: hdfs dfs -mkdir -p /alphafold/ecoli
     - name: Run script to distribute AlphaFold EColi models into HDFS
       ansible.builtin.shell: python /home/almalinux/merizo-search/distribute_data.py /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4/ /alphafold/ecoli/
-    # - name: Upload PDB files to HDFS in batches
-    #   ansible.builtin.shell: "find /home/almalinux/alphafold-db/UP000000625_83333_ECOLI_v4 -name '*.pdb' -exec hdfs dfs -put {} /alphafold/ecoli \\;"
     - name: Delete AlphaFold Ecoli models from local storage
       ansible.builtin.file:
         state: absent

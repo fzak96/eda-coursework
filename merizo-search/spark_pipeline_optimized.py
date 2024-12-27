@@ -199,10 +199,10 @@ def main():
     pdb_files_rdd = spark.sparkContext.wholeTextFiles(hdfs_input_path)
     
     # Add indices and filter to first 100 elements, then add hdfs_folder
-    indexed_rdd = pdb_files_rdd.zipWithIndex()
-    filtered_rdd = indexed_rdd.filter(lambda x: x[1] < 100).map(lambda x: x[0])
-    filtered_rdd.map(lambda x: process_pdb(x, hdfs_folder)).collect()
-    #pdb_files_rdd.map(lambda x: process_pdb(x, hdfs_folder)).collect()
+    # indexed_rdd = pdb_files_rdd.zipWithIndex()
+    # filtered_rdd = indexed_rdd.filter(lambda x: x[1] < 100).map(lambda x: x[0])
+    # filtered_rdd.map(lambda x: process_pdb(x, hdfs_folder)).collect()
+    pdb_files_rdd.map(lambda x: process_pdb(x, hdfs_folder)).collect()
     
     logger.info(log_accumulator.value)
     spark.stop()

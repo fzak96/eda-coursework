@@ -9,13 +9,14 @@
       ansible.builtin.get_url:
         url: http://bioinfadmin.cs.ucl.ac.uk/downloads/merizo_search/cath_foldclassdb.tar.gz
         dest: /home/almalinux/merizo-search/database/
+        force: no
     - name: Unpack Cath DB
       ansible.builtin.unarchive:
         src: /home/almalinux/merizo-search/database/cath_foldclassdb.tar.gz
         dest: /home/almalinux/merizo-search/database/
         remote_src: true
         creates: /home/almalinux/merizo-search/database/cath_foldclassdb
-    - name: Delete Cath DB zipped model
+    - name: Cleanup Cath DB zipped model
       ansible.builtin.file:
         state: absent
         dest: /home/almalinux/merizo-search/database/cath_foldclassdb.tar.gz

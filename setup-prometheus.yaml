@@ -6,7 +6,7 @@
   gather_facts: true 
 
   tasks:
-    - name: Install golang
+    - name: Install Golang
       dnf:
         name: golang
         state: present
