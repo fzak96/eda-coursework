@@ -1,7 +1,7 @@
 - name: Run Merizo Search Analysis
   hosts: mgmtnode
   tasks:
-    - name: Run Merizo Search Analysis on Ecoli Models
-      ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/spark_pipeline_optimized.py ecoli
-    # - name: Run Merizo Search Analysis on Human Models
-    #   ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/spark_pipeline_optimized.py human
+    # - name: Run Merizo Search Analysis on Ecoli Models
+    #   ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/spark_pipeline_optimized.py ecoli
+    - name: Run Merizo Search Analysis on Human Models
+      ansible.builtin.shell: spark-submit /home/almalinux/merizo-search/spark_pipeline_optimized.py human
